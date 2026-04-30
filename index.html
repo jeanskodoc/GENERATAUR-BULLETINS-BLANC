@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Gestion des Bulletins d'Examen Blanc - Accès Sécurisé</title>
+    <title>Gestion des Bulletins d'Examen Blanc - Statistiques Complètes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -65,11 +66,6 @@
             font-size: 1.5rem;
         }
 
-        .auth-header p {
-            color: #7f8c8d;
-            font-size: 0.85rem;
-        }
-
         .auth-form .form-group {
             margin-bottom: 18px;
         }
@@ -79,7 +75,6 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 0.9rem;
         }
 
         .auth-form input {
@@ -88,7 +83,6 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 1rem;
-            transition: all 0.3s;
         }
 
         .auth-form input:focus {
@@ -107,21 +101,11 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 10px;
         }
 
         .auth-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        .auth-footer {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem;
-            color: #7f8c8d;
         }
 
         .expiry-info {
@@ -133,18 +117,25 @@
             text-align: center;
         }
 
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
         /* Alertes */
         .alert {
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 15px;
             display: none;
-            font-size: 0.85rem;
         }
 
-        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .alert-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
         /* Application principale */
         .main-app {
@@ -159,7 +150,7 @@
             padding: 15px;
         }
 
-        /* Barre de session responsive */
+        /* Barre de session */
         .session-info-bar {
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
@@ -192,7 +183,6 @@
             padding: 5px 12px;
             border-radius: 20px;
             font-family: monospace;
-            font-size: 0.9rem;
         }
 
         .logout-btn {
@@ -203,14 +193,9 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
         }
 
-        .logout-btn:hover {
-            background: #c0392b;
-        }
-
-        /* Header responsive */
+        /* Header */
         header {
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
@@ -238,31 +223,19 @@
         }
 
         .header-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
             padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+            color: white;
         }
 
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
+        h1 { font-size: 1.5rem; }
+        .subtitle { font-size: 0.85rem; opacity: 0.9; }
+        .logo { font-size: 2rem; }
 
-        .subtitle {
-            font-size: 0.85rem;
-            opacity: 0.9;
-        }
-
-        .logo {
-            font-size: 2rem;
-        }
-
-        /* Exam selector responsive */
+        /* Exam selector */
         .exam-selector {
             display: flex;
             justify-content: center;
@@ -280,7 +253,6 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 0.85rem;
         }
 
         .exam-btn.active {
@@ -288,13 +260,12 @@
             color: white;
         }
 
-        /* Tabs responsive */
+        /* Tabs */
         .tabs {
             display: flex;
             margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
             gap: 3px;
         }
 
@@ -330,7 +301,7 @@
             to { opacity: 1; }
         }
 
-        /* Form sections */
+        /* Formulaires */
         .form-section {
             background: white;
             border-radius: 12px;
@@ -349,7 +320,6 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
-            font-size: 1.1rem;
         }
 
         .form-row {
@@ -368,17 +338,15 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #2c3e50;
             font-size: 0.85rem;
         }
 
-        input, select, textarea {
+        input, select {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 0.9rem;
-            transition: border 0.3s;
         }
 
         input:focus, select:focus {
@@ -394,25 +362,15 @@
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s;
-            margin-top: 5px;
         }
 
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-
+        .btn:hover { transform: translateY(-2px); }
         .btn-danger { background: #e74c3c; }
-        .btn-danger:hover { background: #c0392b; }
         .btn-success { background: #2ecc71; }
-        .btn-success:hover { background: #27ae60; }
         .btn-warning { background: #f39c12; }
-        .btn-warning:hover { background: #d68910; }
         .btn-info { background: #17a2b8; }
-        .btn-info:hover { background: #138496; }
 
         .btn-group {
             display: flex;
@@ -425,10 +383,9 @@
             font-size: 0.8rem;
         }
 
-        /* Tableaux responsive */
+        /* Tableaux */
         .table-container {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         table {
@@ -445,15 +402,8 @@
         }
 
         th {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
             font-weight: 700;
-            color: #2c3e50;
-        }
-
-        .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -461,27 +411,28 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.75rem;
         }
 
-        /* Stats grid responsive */
+        /* Statistiques */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             margin-bottom: 20px;
         }
 
         .stat-card {
             background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .stat-card h3 {
-            font-size: 1rem;
-            margin-bottom: 10px;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .stat-value {
@@ -493,7 +444,7 @@
 
         .progress-bar {
             height: 8px;
-            background-color: #ecf0f1;
+            background: #ecf0f1;
             border-radius: 4px;
             margin: 10px 0;
             overflow: hidden;
@@ -505,11 +456,42 @@
             transition: width 0.5s ease;
         }
 
-        .progress-success { background-color: #2ecc71; }
-        .progress-warning { background-color: #f39c12; }
-        .progress-danger { background-color: #e74c3c; }
+        .progress-success { background: #2ecc71; }
+        .progress-warning { background: #f39c12; }
+        .progress-danger { background: #e74c3c; }
 
-        /* Bulletin section pour impression */
+        /* Classement par matière */
+        .ranking-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .ranking-table th {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffed4e); font-weight: bold; }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #e0e0e0); font-weight: bold; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #e8a87c); font-weight: bold; }
+        .rank-last { background: #f8d7da; color: #721c24; }
+
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .subject-selector {
+            margin-bottom: 20px;
+        }
+
+        .subject-selector select {
+            max-width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        /* Bulletin */
         .bulletin-section {
             background: white;
             border-radius: 12px;
@@ -525,11 +507,6 @@
             border-bottom: 2px solid #3498db;
         }
 
-        .bulletin-header h2 {
-            font-size: 1.3rem;
-            color: #2c3e50;
-        }
-
         .student-info {
             display: flex;
             justify-content: space-between;
@@ -541,30 +518,9 @@
             border-radius: 8px;
         }
 
-        .average {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .ranking {
-            background: #2c3e50;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-left: 10px;
-        }
-
-        .grades-table {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .warning {
-            color: #e74c3c;
-            font-weight: bold;
-        }
+        .average { font-size: 1.1rem; font-weight: bold; }
+        .ranking { background: #2c3e50; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px; }
+        .warning { color: #e74c3c; font-weight: bold; }
 
         .generate-section {
             text-align: center;
@@ -580,25 +536,6 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .file-input-container {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border: 2px dashed #ddd;
-        }
-
-        .file-input-container.active {
-            display: block;
-        }
-
-        .chart-container {
-            height: 250px;
-            margin: 15px 0;
         }
 
         .footer {
@@ -610,132 +547,23 @@
             font-size: 0.75rem;
         }
 
-        /* Styles pour l'impression */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-                margin: 0;
-            }
-            
-            .session-info-bar,
-            .exam-selector,
-            .tabs,
-            .header-buttons,
-            .generate-section,
-            .logout-btn,
-            .btn,
-            .actions,
-            .form-section,
-            #alert,
-            .footer {
-                display: none !important;
-            }
-            
-            .bulletin-section {
-                page-break-after: always;
-                box-shadow: none;
-                padding: 0;
-                margin: 0;
-            }
-            
-            .main-app {
-                background: white;
-                display: block !important;
-            }
-            
-            .container {
-                padding: 0;
-                margin: 0;
-            }
-            
-            .student-info {
-                background: none;
-                border: 1px solid #ddd;
-            }
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .session-info-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .session-info {
-                justify-content: center;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                padding-top: 50px;
-            }
-            
-            .header-buttons {
-                position: static;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-            
-            .form-title {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .tab {
-                padding: 8px 12px;
-                font-size: 0.75rem;
-            }
-            
-            h1 {
-                font-size: 1.2rem;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-            }
-            
-            .stat-value {
-                font-size: 1.5rem;
-            }
-            
-            .bulletin-header h2 {
-                font-size: 1rem;
-            }
-            
-            .student-info {
-                flex-direction: column;
-            }
+            .container { padding: 10px; }
+            .session-info-bar { flex-direction: column; text-align: center; }
+            .session-info { justify-content: center; }
+            .header-content { flex-direction: column; text-align: center; padding-top: 50px; }
+            .header-buttons { position: static; justify-content: center; margin-bottom: 10px; }
+            h1 { font-size: 1.2rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .tab { padding: 8px 12px; font-size: 0.75rem; }
         }
 
-        @media (max-width: 480px) {
-            .auth-container {
-                padding: 20px;
-            }
-            
-            .form-group {
-                min-width: 100%;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+        @media print {
+            .session-info-bar, .exam-selector, .tabs, .header-buttons, .generate-section, .logout-btn, .btn, .actions, .form-section, #alert, .footer { display: none !important; }
+            .bulletin-section { page-break-after: always; box-shadow: none; }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Page d'authentification -->
@@ -766,7 +594,6 @@
     <!-- Application principale -->
     <div id="mainApp" class="main-app">
         <div class="container">
-            <!-- Barre de session -->
             <div class="session-info-bar">
                 <div class="session-info">
                     <span class="session-badge"><i class="fas fa-user-check"></i> <span id="sessionUser"></span></span>
@@ -783,9 +610,9 @@
                 <div class="header-content">
                     <div>
                         <h1><i class="fas fa-graduation-cap"></i> Gestion des Bulletins d'Examen Blanc</h1>
-                        <p class="subtitle">BEPC | BAC1 | BAC2 - Génération automatique des bulletins</p>
+                        <p class="subtitle">BEPC | BAC1 | BAC2 - Statistiques complètes par matière</p>
                     </div>
-                    <div class="logo"><i class="fas fa-file-contract"></i></div>
+                    <div class="logo"><i class="fas fa-chart-line"></i></div>
                 </div>
             </header>
 
@@ -799,7 +626,7 @@
                 <div class="tab active" data-tab="students">Élèves</div>
                 <div class="tab" data-tab="subjects">Matières</div>
                 <div class="tab" data-tab="grades">Notes</div>
-                <div class="tab" data-tab="statistics">Statistiques</div>
+                <div class="tab" data-tab="statistics">📊 Statistiques</div>
                 <div class="tab" data-tab="bulletin">Bulletins</div>
                 <div class="tab" data-tab="data">Données</div>
             </div>
@@ -863,11 +690,22 @@
                 </div>
             </div>
 
-            <!-- Onglet Statistiques -->
+            <!-- Onglet Statistiques (AMÉLIORÉ) -->
             <div id="statistics-tab" class="tab-content">
                 <div class="form-section">
                     <h2 class="form-title"><i class="fas fa-chart-pie"></i> Statistiques Générales</h2>
                     <div class="stats-grid" id="generalStats"></div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-chart-line"></i> Analyse par Matière</h2>
+                    <div class="subject-selector">
+                        <label><i class="fas fa-book-open"></i> Sélectionner une matière :</label>
+                        <select id="subjectStatsSelect" style="width:100%; padding:12px; margin-top:10px;">
+                            <option value="">-- Choisir une matière --</option>
+                        </select>
+                    </div>
+                    <div id="subjectDetailedStats" style="display:none;"></div>
                 </div>
             </div>
 
@@ -884,12 +722,11 @@
                 <div class="form-section">
                     <h2 class="form-title"><i class="fas fa-database"></i> Gestion des données</h2>
                     <div class="stats-grid">
-                        <div class="stat-card"><h3>Élèves</h3><div class="stat-value" id="studentsCount">0</div><button class="btn btn-warning btn-sm" id="exportStudentsDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
-                        <div class="stat-card"><h3>Matières</h3><div class="stat-value" id="subjectsCount">0</div><button class="btn btn-warning btn-sm" id="exportSubjectsDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
-                        <div class="stat-card"><h3>Notes</h3><div class="stat-value" id="gradesCount">0</div><button class="btn btn-warning btn-sm" id="exportGradesDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
+                        <div class="stat-card"><h3>Élèves</h3><div class="stat-value" id="studentsCount">0</div><button class="btn btn-warning btn-sm" id="exportAllDataBtn"><i class="fas fa-download"></i> Sauvegarde</button></div>
+                        <div class="stat-card"><h3>Matières</h3><div class="stat-value" id="subjectsCount">0</div></div>
+                        <div class="stat-card"><h3>Notes</h3><div class="stat-value" id="gradesCount">0</div></div>
                     </div>
                     <div class="btn-group" style="margin-top:15px">
-                        <button class="btn btn-success" id="exportAllDataBtn"><i class="fas fa-download"></i> Sauvegarde complète</button>
                         <button class="btn btn-danger" id="resetAllDataBtn"><i class="fas fa-trash-alt"></i> Réinitialiser tout</button>
                     </div>
                 </div>
@@ -903,13 +740,14 @@
         // === AUTHENTIFICATION ===
         let activeSession = null;
         let countdownInterval = null;
-        
+        let charts = {};
+
         const VALID_CREDENTIALS = {
             'ADMIN_001': { password: 'BULLETIN2025', institution: 'Administration' },
             'CEG_001': { password: 'MASSEDENA2025', institution: 'CEG Massedena' },
             'LYCEE_001': { password: 'TOKIN2025', institution: 'Lycée de Tokin' }
         };
-        
+
         function checkExistingSession() {
             const saved = localStorage.getItem('examAppActiveSession');
             if (saved) {
@@ -920,14 +758,12 @@
                         startCountdown();
                         showMainApp();
                         return true;
-                    } else {
-                        localStorage.removeItem('examAppActiveSession');
-                    }
+                    } else localStorage.removeItem('examAppActiveSession');
                 } catch(e) {}
             }
             return false;
         }
-        
+
         function login(username, password) {
             if (VALID_CREDENTIALS[username] && VALID_CREDENTIALS[username].password === password) {
                 activeSession = {
@@ -945,7 +781,7 @@
             }
             return false;
         }
-        
+
         function logout() {
             if (confirm('Déconnexion ?')) {
                 localStorage.removeItem('examAppActiveSession');
@@ -953,12 +789,10 @@
                 if (countdownInterval) clearInterval(countdownInterval);
                 document.getElementById('authOverlay').style.display = 'flex';
                 document.getElementById('mainApp').style.display = 'none';
-                document.getElementById('authUsername').value = '';
-                document.getElementById('authPassword').value = '';
                 showAuthAlert('Déconnecté', 'success');
             }
         }
-        
+
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
@@ -977,14 +811,14 @@
                 if (display) display.textContent = `${hours}h ${minutes}m ${seconds}s`;
             }, 1000);
         }
-        
+
         function showMainApp() {
             document.getElementById('authOverlay').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             document.getElementById('sessionUser').textContent = activeSession.username;
             document.getElementById('sessionInstitution').textContent = activeSession.institution;
         }
-        
+
         function showAuthAlert(msg, type) {
             const div = document.getElementById('authAlert');
             div.textContent = msg;
@@ -992,7 +826,7 @@
             div.style.display = 'block';
             setTimeout(() => div.style.display = 'none', 4000);
         }
-        
+
         function showAlert(msg, type) {
             const div = document.getElementById('alert');
             div.textContent = msg;
@@ -1000,7 +834,7 @@
             div.style.display = 'block';
             setTimeout(() => div.style.display = 'none', 4000);
         }
-        
+
         // === DONNÉES ===
         let appData = {
             currentExam: 'BEPC',
@@ -1011,7 +845,7 @@
             nextSubjectId: 1,
             nextGradeId: 1
         };
-        
+
         function loadFromLocalStorage() {
             const saved = localStorage.getItem('examData_' + (activeSession?.username || 'default'));
             if (saved) {
@@ -1021,33 +855,12 @@
                 } catch(e) {}
             }
         }
-        
+
         function saveToLocalStorage() {
             localStorage.setItem('examData_' + (activeSession?.username || 'default'), JSON.stringify(appData));
         }
-        
-        function resetData() {
-            if (confirm('⚠️ Supprimer toutes les données ?')) {
-                appData = { currentExam: 'BEPC', students: [], subjects: [], grades: [], nextStudentId: 1, nextSubjectId: 1, nextGradeId: 1 };
-                saveToLocalStorage();
-                updateUI();
-                showAlert('Toutes les données ont été réinitialisées', 'success');
-            }
-        }
-        
-        function exportAllData() {
-            const dataStr = JSON.stringify(appData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `backup_${new Date().toISOString().slice(0,19)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showAlert('Export effectué', 'success');
-        }
-        
-        // === FONCTIONS CRUD ===
+
+        // === CRUD ===
         function updateUI() {
             renderStudents();
             renderSubjects();
@@ -1056,7 +869,7 @@
             updateGeneralStats();
             updateCounters();
         }
-        
+
         function renderStudents() {
             const tbody = document.getElementById('studentsList');
             tbody.innerHTML = '';
@@ -1066,7 +879,7 @@
                 tbody.innerHTML += `<tr><td>${s.id}</td><td>${s.lastName}</td><td>${s.firstName}</td><td>${s.matricule}</td><td>${s.exam}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteStudent(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
-        
+
         function renderSubjects() {
             const tbody = document.getElementById('subjectsList');
             tbody.innerHTML = '';
@@ -1076,7 +889,7 @@
                 tbody.innerHTML += `<tr><td>${s.id}</td><td>${s.name}</td><td>${s.coefficient}</td><td>${s.exam}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteSubject(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
-        
+
         function renderGrades() {
             const tbody = document.getElementById('gradesList');
             tbody.innerHTML = '';
@@ -1089,11 +902,11 @@
                 const student = appData.students.find(s => s.id === g.studentId);
                 const subject = appData.subjects.find(s => s.id === g.subjectId);
                 if (student && subject) {
-                    tbody.innerHTML += `<tr><td>${student.firstName} ${student.lastName}</td><td>${subject.name}</td><td>${g.value}/20</td><td>${subject.coefficient}</td><td>${g.teacher}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteGrade(${g.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+                    tbody.innerHTML += `<tr><td>${student.firstName} ${student.lastName}</td><td>${subject.name}</td><td class="${g.value < 10 ? 'warning' : ''}">${g.value}/20</td></td><td>${subject.coefficient}</td><td>${g.teacher}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteGrade(${g.id})"><i class="fas fa-trash"></i></button><tr>`;
                 }
             });
         }
-        
+
         function updateSelects() {
             const studentSelect = document.getElementById('gradeStudent');
             studentSelect.innerHTML = '<option value="">Choisir</option>';
@@ -1106,8 +919,14 @@
             appData.subjects.filter(s => s.exam === appData.currentExam).forEach(s => {
                 subjectSelect.innerHTML += `<option value="${s.id}">${s.name} (Coeff ${s.coefficient})</option>`;
             });
+
+            const statSelect = document.getElementById('subjectStatsSelect');
+            statSelect.innerHTML = '<option value="">-- Choisir une matière --</option>';
+            appData.subjects.filter(s => s.exam === appData.currentExam).forEach(s => {
+                statSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+            });
         }
-        
+
         function addStudent() {
             const lastName = document.getElementById('lastName').value.trim();
             const firstName = document.getElementById('firstName').value.trim();
@@ -1122,7 +941,7 @@
             document.getElementById('matricule').value = '';
             showAlert('Élève ajouté', 'success');
         }
-        
+
         function deleteStudent(id) {
             if (confirm('Supprimer cet élève ?')) {
                 appData.students = appData.students.filter(s => s.id !== id);
@@ -1132,7 +951,7 @@
                 showAlert('Élève supprimé', 'success');
             }
         }
-        
+
         function addSubject() {
             const name = document.getElementById('subjectName').value.trim();
             const coefficient = parseInt(document.getElementById('coefficient').value);
@@ -1144,7 +963,7 @@
             document.getElementById('subjectName').value = '';
             showAlert('Matière ajoutée', 'success');
         }
-        
+
         function deleteSubject(id) {
             if (confirm('Supprimer cette matière ?')) {
                 appData.subjects = appData.subjects.filter(s => s.id !== id);
@@ -1154,7 +973,7 @@
                 showAlert('Matière supprimée', 'success');
             }
         }
-        
+
         function addGrade() {
             const studentId = parseInt(document.getElementById('gradeStudent').value);
             const subjectId = parseInt(document.getElementById('gradeSubject').value);
@@ -1177,7 +996,7 @@
             document.getElementById('gradeValue').value = '';
             document.getElementById('gradeTeacher').value = '';
         }
-        
+
         function deleteGrade(id) {
             if (confirm('Supprimer cette note ?')) {
                 appData.grades = appData.grades.filter(g => g.id !== id);
@@ -1186,12 +1005,14 @@
                 showAlert('Note supprimée', 'success');
             }
         }
-        
+
+        // === STATISTIQUES GÉNÉRALES ===
         function updateGeneralStats() {
             const container = document.getElementById('generalStats');
             const students = appData.students.filter(s => s.exam === appData.currentExam);
             const subjects = appData.subjects.filter(s => s.exam === appData.currentExam);
             let totalAvg = 0, count = 0, passing = 0;
+            
             students.forEach(s => {
                 const grades = appData.grades.filter(g => g.studentId === s.id);
                 let points = 0, coeffs = 0;
@@ -1206,22 +1027,158 @@
                     if (avg >= 10) passing++;
                 }
             });
+            
             const generalAvg = count > 0 ? (totalAvg / count).toFixed(2) : 0;
             const passRate = count > 0 ? Math.round((passing / count) * 100) : 0;
+            
             container.innerHTML = `
-                <div class="stat-card"><h3>Élèves</h3><div class="stat-value">${students.length}</div></div>
-                <div class="stat-card"><h3>Matières</h3><div class="stat-value">${subjects.length}</div></div>
-                <div class="stat-card"><h3>Moyenne Générale</h3><div class="stat-value">${generalAvg}/20</div><div class="progress-bar"><div class="progress-fill progress-success" style="width:${passRate}%"></div></div><p>Taux réussite: ${passRate}%</p></div>
+                <div class="stat-card"><h3><i class="fas fa-users"></i> Élèves</h3><div class="stat-value">${students.length}</div></div>
+                <div class="stat-card"><h3><i class="fas fa-book"></i> Matières</h3><div class="stat-value">${subjects.length}</div></div>
+                <div class="stat-card"><h3><i class="fas fa-chart-line"></i> Moyenne Générale</h3><div class="stat-value">${generalAvg}/20</div><div class="progress-bar"><div class="progress-fill ${passRate >= 70 ? 'progress-success' : passRate >= 50 ? 'progress-warning' : 'progress-danger'}" style="width:${passRate}%"></div></div><p>Taux réussite: ${passRate}%</p></div>
             `;
         }
-        
+
+        // === STATISTIQUES DÉTAILLÉES PAR MATIÈRE ===
+        function showSubjectStats(subjectId) {
+            const subject = appData.subjects.find(s => s.id === subjectId);
+            if (!subject) return;
+            
+            const grades = appData.grades.filter(g => g.subjectId === subjectId);
+            const studentsWithGrades = [];
+            
+            grades.forEach(g => {
+                const student = appData.students.find(s => s.id === g.studentId);
+                if (student && student.exam === appData.currentExam) {
+                    studentsWithGrades.push({ student, grade: g.value, teacher: g.teacher });
+                }
+            });
+            
+            studentsWithGrades.sort((a, b) => b.grade - a.grade);
+            
+            const top5 = studentsWithGrades.slice(0, 5);
+            const bottom3 = studentsWithGrades.slice(-3).reverse();
+            
+            const totalGrades = studentsWithGrades.length;
+            const sumGrades = studentsWithGrades.reduce((sum, s) => sum + s.grade, 0);
+            const avgGrade = totalGrades > 0 ? (sumGrades / totalGrades).toFixed(2) : 0;
+            const passingGrades = studentsWithGrades.filter(s => s.grade >= 10).length;
+            const passRate = totalGrades > 0 ? Math.round((passingGrades / totalGrades) * 100) : 0;
+            const highest = studentsWithGrades.length > 0 ? Math.max(...studentsWithGrades.map(s => s.grade)) : 0;
+            const lowest = studentsWithGrades.length > 0 ? Math.min(...studentsWithGrades.map(s => s.grade)) : 0;
+            
+            // Préparer les données pour le graphique (distribution des notes)
+            const ranges = [
+                { label: '0-4', min: 0, max: 4, count: 0 },
+                { label: '5-9', min: 5, max: 9, count: 0 },
+                { label: '10-14', min: 10, max: 14, count: 0 },
+                { label: '15-20', min: 15, max: 20, count: 0 }
+            ];
+            
+            studentsWithGrades.forEach(s => {
+                for (let range of ranges) {
+                    if (s.grade >= range.min && s.grade <= range.max) {
+                        range.count++;
+                        break;
+                    }
+                }
+            });
+            
+            const container = document.getElementById('subjectDetailedStats');
+            container.style.display = 'block';
+            container.innerHTML = `
+                <div style="background:white; border-radius:12px; padding:20px; margin-top:20px;">
+                    <h3 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:10px;">
+                        <i class="fas fa-chart-bar"></i> ${subject.name} - Analyse détaillée
+                    </h3>
+                    
+                    <div class="stats-grid" style="margin-top:20px">
+                        <div class="stat-card"><h4><i class="fas fa-calculator"></i> Statistiques</h4><div class="stat-value">${avgGrade}/20</div><p>Moyenne de la matière</p><div class="progress-bar"><div class="progress-fill ${passRate >= 70 ? 'progress-success' : passRate >= 50 ? 'progress-warning' : 'progress-danger'}" style="width:${passRate}%"></div></div><p>Taux réussite: ${passRate}%</p></div>
+                        <div class="stat-card"><h4><i class="fas fa-chart-simple"></i> Distribution</h4><p><i class="fas fa-arrow-up"></i> Note max: ${highest}/20</p><p><i class="fas fa-arrow-down"></i> Note min: ${lowest}/20</p><p><i class="fas fa-users"></i> Total notes: ${totalGrades}</p><p><i class="fas fa-check-circle"></i> Réussite: ${passingGrades} élèves</p></div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="distributionChart_${subject.id}"></canvas>
+                    </div>
+                    
+                    <div class="stats-grid" style="margin-top:20px">
+                        <div class="stat-card">
+                            <h4><i class="fas fa-trophy"></i> 🏆 TOP 5 - Meilleurs résultats</h4>
+                            <table class="ranking-table" style="width:100%">
+                                <thead><tr><th>Rang</th><th>Élève</th><th>Note</th><th>Enseignant</th></tr></thead>
+                                <tbody>
+                                    ${top5.map((item, idx) => `
+                                        <tr class="${idx === 0 ? 'rank-1' : idx === 1 ? 'rank-2' : idx === 2 ? 'rank-3' : ''}">
+                                            <td><b>${idx + 1}</b></td>
+                                            <td>${item.student.firstName} ${item.student.lastName}</td>
+                                            <td style="font-weight:bold; color:${item.grade >= 15 ? '#27ae60' : '#f39c12'}">${item.grade}/20</td>
+                                            <td>${item.teacher}</td>
+                                        </tr>
+                                    `).join('')}
+                                    ${top5.length === 0 ? '<tr><td colspan="4" style="text-align:center">Aucune note</td></tr>' : ''}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h4><i class="fas fa-exclamation-triangle"></i> ⚠️ 3 Derniers - À améliorer</h4>
+                            <table class="ranking-table" style="width:100%">
+                                <thead><tr><th>Rang</th><th>Élève</th><th>Note</th><th>Enseignant</th></tr></thead>
+                                <tbody>
+                                    ${bottom3.map((item, idx) => `
+                                        <tr class="rank-last">
+                                            <td><b>${studentsWithGrades.length - idx}</b></td>
+                                            <td>${item.student.firstName} ${item.student.lastName}</td>
+                                            <td style="font-weight:bold; color:#e74c3c">${item.grade}/20</td>
+                                            <td>${item.teacher}</td>
+                                        </tr>
+                                    `).join('')}
+                                    ${bottom3.length === 0 ? '<tr><td colspan="4" style="text-align:center">Aucune note</td></tr>' : ''}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Créer le graphique
+            if (charts[subject.id]) {
+                charts[subject.id].destroy();
+            }
+            const ctx = document.getElementById(`distributionChart_${subject.id}`).getContext('2d');
+            charts[subject.id] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ranges.map(r => r.label),
+                    datasets: [{
+                        label: `Distribution des notes - ${subject.name}`,
+                        data: ranges.map(r => r.count),
+                        backgroundColor: ['#e74c3c', '#f39c12', '#3498db', '#2ecc71'],
+                        borderColor: ['#c0392b', '#d68910', '#2980b9', '#27ae60'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.raw} élève(s)` } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Nombre d\'élèves' }, ticks: { stepSize: 1 } },
+                        x: { title: { display: true, text: 'Plages de notes' } }
+                    }
+                }
+            });
+        }
+
         function updateCounters() {
             document.getElementById('studentsCount').textContent = appData.students.length;
             document.getElementById('subjectsCount').textContent = appData.subjects.length;
             document.getElementById('gradesCount').textContent = appData.grades.length;
         }
-        
-        // === GÉNÉRATION DES BULLETINS AVEC IMPRESSION ===
+
+        // === GÉNÉRATION BULLETINS ===
         function generateBulletins() {
             const container = document.getElementById('bulletinResults');
             container.innerHTML = '';
@@ -1251,8 +1208,7 @@
                 bulletin.className = 'bulletin-section';
                 let gradesHtml = '';
                 student.gradeDetails.forEach(g => {
-                    const warningClass = g.grade < 10 ? 'warning' : '';
-                    gradesHtml += `<tr><td>${g.subject}</td><td>${g.coeff}</td><td class="${warningClass}">${g.grade}/20</td><td>${g.teacher}</td></tr>`;
+                    gradesHtml += `<tr><td><strong>${g.subject}</strong></td><td>${g.coeff}</td><td class="${g.grade < 10 ? 'warning' : ''}">${g.grade}/20</td><td>${g.teacher}</td></tr>`;
                 });
                 bulletin.innerHTML = `
                     <div class="bulletin-header"><h2>BULLETIN EXAMEN BLANC - ${student.exam}</h2><p>Année 2025-2026</p></div>
@@ -1260,17 +1216,15 @@
                         <div><p><strong>Nom:</strong> ${student.lastName}</p><p><strong>Prénom:</strong> ${student.firstName}</p><p><strong>Matricule:</strong> ${student.matricule}</p></div>
                         <div><p class="average">Moyenne: ${student.avg}/20 <span class="ranking">Rang: ${idx+1}/${students.length}</span></p></div>
                     </div>
-                    <table class="grades-table"><thead><tr><th>Matière</th><th>Coeff</th><th>Note</th><th>Enseignant</th></tr></thead><tbody>${gradesHtml || '<tr><td colspan="4">Aucune note</td></tr>'}</tbody></table>
+                    <table style="width:100%"><thead><tr><th>Matière</th><th>Coeff</th><th>Note</th><th>Enseignant</th></tr></thead><tbody>${gradesHtml || '<tr><td colspan="4">Aucune note</td></tr>'}</tbody></table>
                     <div style="margin-top:20px"><p><strong>Appréciation:</strong> ${getAppreciation(parseFloat(student.avg))}</p></div>
-                    <div style="text-align:center; margin-top:25px; padding-top:15px; border-top:1px solid #ddd;">
-                        <button class="btn btn-info" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer ce bulletin</button>
-                    </div>
+                    <div style="text-align:center; margin-top:25px;"><button class="btn btn-info" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer</button></div>
                 `;
                 container.appendChild(bulletin);
             });
             showAlert(`${students.length} bulletin(s) généré(s)`, 'success');
         }
-        
+
         function getAppreciation(avg) {
             if (avg >= 16) return "Excellent travail ! Félicitations !";
             if (avg >= 14) return "Très bon travail, continuez ainsi !";
@@ -1279,38 +1233,54 @@
             if (avg >= 8) return "Insuffisant, doit travailler davantage.";
             return "Très insuffisant, un redoublement d'efforts est nécessaire.";
         }
-        
+
         function printBulletin(button) {
             const bulletin = button.closest('.bulletin-section').cloneNode(true);
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Bulletin - Impression</title>
-                    <meta charset="UTF-8">
-                    <style>
-                        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-                        body { padding: 20px; }
-                        .bulletin-section { max-width: 800px; margin: 0 auto; }
-                        .bulletin-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #3498db; }
-                        .student-info { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; }
-                        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-                        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
-                        th { background: #f8f9fa; }
-                        .warning { color: #e74c3c; font-weight: bold; }
-                        .average { font-size: 1.2rem; font-weight: bold; }
-                        .ranking { background: #2c3e50; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px; }
-                        @media print { button { display: none; } }
-                    </style>
-                </head>
-                <body>${bulletin.outerHTML}</body>
-                </html>
+                <html><head><title>Bulletin</title><meta charset="UTF-8">
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+                    body { padding: 20px; }
+                    .bulletin-section { max-width: 800px; margin: 0 auto; }
+                    .bulletin-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 15px; }
+                    .student-info { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+                    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+                    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                    th { background: #f8f9fa; }
+                    .warning { color: #e74c3c; font-weight: bold; }
+                    .average { font-size: 1.2rem; font-weight: bold; }
+                    .ranking { background: #2c3e50; color: white; padding: 3px 10px; border-radius: 20px; margin-left: 10px; }
+                    @media print { button { display: none; } }
+                </style>
+                </head><body>${bulletin.outerHTML}</body></html>
             `);
             printWindow.document.close();
             printWindow.print();
         }
-        
+
+        function exportAllData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_${new Date().toISOString().slice(0,19)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showAlert('Export effectué', 'success');
+        }
+
+        function resetAllData() {
+            if (confirm('⚠️ Supprimer TOUTES les données ?')) {
+                appData = { currentExam: 'BEPC', students: [], subjects: [], grades: [], nextStudentId: 1, nextSubjectId: 1, nextGradeId: 1 };
+                saveToLocalStorage();
+                updateUI();
+                showAlert('Données réinitialisées', 'success');
+            }
+        }
+
         // === INITIALISATION ===
         document.addEventListener('DOMContentLoaded', () => {
             if (!checkExistingSession()) {
@@ -1333,10 +1303,13 @@
             document.getElementById('addGradeBtn').addEventListener('click', addGrade);
             document.getElementById('generateBulletinsBtn').addEventListener('click', generateBulletins);
             document.getElementById('exportAllDataBtn').addEventListener('click', exportAllData);
-            document.getElementById('resetAllDataBtn').addEventListener('click', resetData);
-            document.getElementById('exportStudentsDataBtn').addEventListener('click', () => exportAllData());
-            document.getElementById('exportSubjectsDataBtn').addEventListener('click', () => exportAllData());
-            document.getElementById('exportGradesDataBtn').addEventListener('click', () => exportAllData());
+            document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+            
+            document.getElementById('subjectStatsSelect').addEventListener('change', function() {
+                const subjectId = parseInt(this.value);
+                if (subjectId) showSubjectStats(subjectId);
+                else document.getElementById('subjectDetailedStats').style.display = 'none';
+            });
             
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -1344,7 +1317,11 @@
                     this.classList.add('active');
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
-                    if (this.dataset.tab === 'statistics') updateGeneralStats();
+                    if (this.dataset.tab === 'statistics') {
+                        updateGeneralStats();
+                        const select = document.getElementById('subjectStatsSelect');
+                        if (select.value) showSubjectStats(parseInt(select.value));
+                    }
                 });
             });
             
@@ -1354,6 +1331,8 @@
                     this.classList.add('active');
                     appData.currentExam = this.dataset.exam;
                     updateUI();
+                    document.getElementById('subjectDetailedStats').style.display = 'none';
+                    document.getElementById('subjectStatsSelect').value = '';
                 });
             });
         });
