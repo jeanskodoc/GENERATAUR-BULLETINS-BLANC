@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Gestion des Bulletins d'Examen Blanc - Accès Sécurisé</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -14,9 +14,9 @@
         }
 
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: #333;
-            line-height: 1.6;
         }
 
         /* Page d'authentification */
@@ -31,53 +31,47 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            backdrop-filter: blur(5px);
+            padding: 20px;
         }
 
         .auth-container {
             background: white;
             border-radius: 20px;
-            padding: 40px;
-            width: 90%;
+            padding: 30px 25px;
+            width: 100%;
             max-width: 450px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideIn 0.5s ease;
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .auth-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .auth-header .logo {
             font-size: 3rem;
             color: #3498db;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .auth-header h2 {
             color: #2c3e50;
-            margin-bottom: 5px;
+            font-size: 1.5rem;
         }
 
         .auth-header p {
             color: #7f8c8d;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .auth-form .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .auth-form label {
@@ -85,11 +79,12 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #2c3e50;
+            font-size: 0.9rem;
         }
 
         .auth-form input {
             width: 100%;
-            padding: 14px 15px;
+            padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 1rem;
@@ -108,7 +103,7 @@
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -122,37 +117,11 @@
 
         .auth-footer {
             text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #eee;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #7f8c8d;
-        }
-
-        .alert {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            font-size: 0.9rem;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
         }
 
         .expiry-info {
@@ -160,38 +129,54 @@
             padding: 10px;
             border-radius: 8px;
             margin-top: 15px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
-            color: #2c3e50;
         }
 
-        .expiry-info i {
-            margin-right: 5px;
-            color: #e74c3c;
+        /* Alertes */
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            font-size: 0.85rem;
         }
 
-        /* Contenu principal (masqué par défaut) */
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+
+        /* Application principale */
         .main-app {
             display: none;
+            background: #f5f7fa;
+            min-height: 100vh;
         }
 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Barre de session responsive */
         .session-info-bar {
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .session-info {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
@@ -199,7 +184,7 @@
             background: rgba(255,255,255,0.2);
             padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .countdown-timer {
@@ -207,14 +192,14 @@
             padding: 5px 12px;
             border-radius: 20px;
             font-family: monospace;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .logout-btn {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 8px 18px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
@@ -223,23 +208,15 @@
 
         .logout-btn:hover {
             background: #c0392b;
-            transform: translateY(-2px);
         }
 
-        /* Styles existants pour l'application */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        /* Header responsive */
         header {
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 25px 0;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            border-radius: 12px;
+            margin-bottom: 25px;
             position: relative;
         }
 
@@ -248,64 +225,62 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .header-buttons {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
         }
 
         .header-btn {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-        }
-
-        .header-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            font-size: 0.8rem;
+            transition: all 0.3s;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             margin-bottom: 5px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             opacity: 0.9;
         }
 
+        .logo {
+            font-size: 2rem;
+        }
+
+        /* Exam selector responsive */
         .exam-selector {
             display: flex;
             justify-content: center;
-            margin: 20px 0 30px;
-            flex-wrap: wrap;
             gap: 10px;
+            margin: 15px 0 25px;
+            flex-wrap: wrap;
         }
 
         .exam-btn {
             background: white;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
         }
 
         .exam-btn.active {
@@ -313,193 +288,26 @@
             color: white;
         }
 
-        .exam-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .form-section {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-title {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        input:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-
-        .btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background: #2980b9;
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-        }
-
-        .btn-success {
-            background: #2ecc71;
-        }
-
-        .btn-success:hover {
-            background: #27ae60;
-        }
-
-        .btn-warning {
-            background: #f39c12;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 8px 15px;
-            font-size: 0.9rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f8f9fa;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        .actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .generate-section {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .generate-btn {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-5px);
-        }
-
-        .bulletin-section {
-            display: none;
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
+        /* Tabs responsive */
         .tabs {
             display: flex;
             margin-bottom: 20px;
             border-bottom: 1px solid #ddd;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 3px;
         }
 
         .tab {
-            padding: 15px 30px;
+            padding: 10px 15px;
             cursor: pointer;
             background: #f8f9fa;
             border: 1px solid #ddd;
             border-bottom: none;
-            margin-right: 5px;
-            border-radius: 5px 5px 0 0;
+            border-radius: 8px 8px 0 0;
             font-weight: 600;
             white-space: nowrap;
+            font-size: 0.8rem;
         }
 
         .tab.active {
@@ -514,61 +322,273 @@
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Form sections */
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.85rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        /* Boutons */
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #2ecc71; }
+        .btn-success:hover { background: #27ae60; }
+        .btn-warning { background: #f39c12; }
+        .btn-warning:hover { background: #d68910; }
+        .btn-info { background: #17a2b8; }
+        .btn-info:hover { background: #138496; }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Tableaux responsive */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        /* Stats grid responsive */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: white;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .stat-card h3 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            color: #2c3e50;
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .progress-bar {
-            height: 10px;
+            height: 8px;
             background-color: #ecf0f1;
-            border-radius: 5px;
+            border-radius: 4px;
             margin: 10px 0;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: width 0.5s ease;
         }
 
-        .progress-success {
-            background-color: #2ecc71;
+        .progress-success { background-color: #2ecc71; }
+        .progress-warning { background-color: #f39c12; }
+        .progress-danger { background-color: #e74c3c; }
+
+        /* Bulletin section pour impression */
+        .bulletin-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .bulletin-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .bulletin-header h2 {
+            font-size: 1.3rem;
+            color: #2c3e50;
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .average {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .ranking {
+            background: #2c3e50;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .grades-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .warning {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .generate-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .file-input-container {
             display: none;
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 15px;
+            padding: 15px;
             background-color: #f8f9fa;
-            border-radius: 5px;
+            border-radius: 8px;
             border: 2px dashed #ddd;
         }
 
@@ -576,74 +596,142 @@
             display: block;
         }
 
-        .student-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .student-name {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .student-grade {
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-
-        .grade-good {
-            background-color: #d5f4e6;
-            color: #27ae60;
-        }
-
-        .grade-medium {
-            background-color: #fff3cd;
-            color: #f39c12;
-        }
-
-        .grade-bad {
-            background-color: #f8d7da;
-            color: #e74c3c;
-        }
-
         .chart-container {
-            height: 300px;
-            margin: 20px 0;
+            height: 250px;
+            margin: 15px 0;
         }
 
         .footer {
             text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
+            margin-top: 30px;
+            padding-top: 15px;
             border-top: 1px solid #ddd;
             color: #7f8c8d;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
 
+        /* Styles pour l'impression */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .session-info-bar,
+            .exam-selector,
+            .tabs,
+            .header-buttons,
+            .generate-section,
+            .logout-btn,
+            .btn,
+            .actions,
+            .form-section,
+            #alert,
+            .footer {
+                display: none !important;
+            }
+            
+            .bulletin-section {
+                page-break-after: always;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .main-app {
+                background: white;
+                display: block !important;
+            }
+            
+            .container {
+                padding: 0;
+                margin: 0;
+            }
+            
+            .student-info {
+                background: none;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
+            .container {
+                padding: 10px;
             }
-
-            .header-buttons {
-                position: static;
-                justify-content: center;
-                margin-top: 15px;
-            }
-
+            
             .session-info-bar {
                 flex-direction: column;
                 text-align: center;
             }
-
+            
             .session-info {
                 justify-content: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 50px;
+            }
+            
+            .header-buttons {
+                position: static;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            
+            .form-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .tab {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+            
+            h1 {
+                font-size: 1.2rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .bulletin-header h2 {
+                font-size: 1rem;
+            }
+            
+            .student-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 20px;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -654,15 +742,11 @@
     <div id="authOverlay" class="auth-overlay">
         <div class="auth-container">
             <div class="auth-header">
-                <div class="logo">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
+                <div class="logo"><i class="fas fa-graduation-cap"></i></div>
                 <h2>Accès Sécurisé</h2>
                 <p>Générateur de Bulletins d'Examen Blanc</p>
             </div>
-            
             <div id="authAlert" class="alert"></div>
-            
             <form id="authForm" class="auth-form">
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Identifiant</label>
@@ -672,51 +756,36 @@
                     <label><i class="fas fa-key"></i> Mot de passe</label>
                     <input type="password" id="authPassword" placeholder="Entrez votre mot de passe" required>
                 </div>
-                <button type="submit" class="auth-btn">
-                    <i class="fas fa-sign-in-alt"></i> Se connecter
-                </button>
+                <button type="submit" class="auth-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
             </form>
-            
-            <div class="expiry-info">
-                <i class="fas fa-hourglass-half"></i> Les identifiants sont valables 6 heures
-            </div>
-            
-            <div class="auth-footer">
-                <p>Contactez l'administrateur pour obtenir vos identifiants</p>
-                <p><i class="fab fa-whatsapp"></i> +228 92 87 16 05</p>
-            </div>
+            <div class="expiry-info"><i class="fas fa-hourglass-half"></i> Identifiants valables 6 heures</div>
+            <div class="auth-footer"><p><i class="fab fa-whatsapp"></i> +228 92 87 16 05</p></div>
         </div>
     </div>
 
-    <!-- Application principale (masquée par défaut) -->
+    <!-- Application principale -->
     <div id="mainApp" class="main-app">
         <div class="container">
-            <!-- Barre d'information de session -->
+            <!-- Barre de session -->
             <div class="session-info-bar">
                 <div class="session-info">
                     <span class="session-badge"><i class="fas fa-user-check"></i> <span id="sessionUser"></span></span>
                     <span class="session-badge"><i class="fas fa-building"></i> <span id="sessionInstitution"></span></span>
-                    <span class="countdown-timer"><i class="fas fa-clock"></i> Expire dans: <span id="countdownDisplay"></span></span>
+                    <span class="countdown-timer"><i class="fas fa-clock"></i> Expire: <span id="countdownDisplay"></span></span>
                 </div>
-                <button class="logout-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </button>
+                <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
             </div>
 
             <header>
                 <div class="header-buttons">
-                    <button class="header-btn" id="closeBtn">
-                        <i class="fas fa-times"></i> Fermer
-                    </button>
+                    <button class="header-btn" id="closeBtn"><i class="fas fa-times"></i> Fermer</button>
                 </div>
                 <div class="header-content">
                     <div>
                         <h1><i class="fas fa-graduation-cap"></i> Gestion des Bulletins d'Examen Blanc</h1>
-                        <p class="subtitle">BEPC | BAC1 | BAC2 - Génération automatique des bulletins et classement</p>
+                        <p class="subtitle">BEPC | BAC1 | BAC2 - Génération automatique des bulletins</p>
                     </div>
-                    <div class="logo">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
+                    <div class="logo"><i class="fas fa-file-contract"></i></div>
                 </div>
             </header>
 
@@ -732,315 +801,126 @@
                 <div class="tab" data-tab="grades">Notes</div>
                 <div class="tab" data-tab="statistics">Statistiques</div>
                 <div class="tab" data-tab="bulletin">Bulletins</div>
-                <div class="tab" data-tab="data">Gestion des Données</div>
+                <div class="tab" data-tab="data">Données</div>
             </div>
 
             <div id="alert" class="alert"></div>
 
-            <!-- Onglet 1: Élèves -->
+            <!-- Onglet Élèves -->
             <div id="students-tab" class="tab-content active">
                 <div class="form-section">
-                    <div class="data-actions">
-                        <h2 class="form-title"><i class="fas fa-user-plus"></i> Ajouter un élève</h2>
-                        <div class="btn-group">
-                            <button class="btn btn-info btn-sm" id="importStudentsBtn">
-                                <i class="fas fa-file-import"></i> Importer JSON
-                            </button>
-                            <button class="btn btn-warning btn-sm" id="exportStudentsBtn">
-                                <i class="fas fa-file-export"></i> Exporter JSON
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="file-input-container" id="studentsFileInput">
-                        <input type="file" id="studentsJsonFile" accept=".json" class="file-input">
-                        <div class="import-options">
-                            <label class="import-option">
-                                <input type="radio" name="studentsImportMode" value="replace" checked> Remplacer les données
-                            </label>
-                            <label class="import-option">
-                                <input type="radio" name="studentsImportMode" value="append"> Ajouter aux données
-                            </label>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-success" id="confirmStudentsImport">Confirmer</button>
-                            <button class="btn btn-danger" id="cancelStudentsImport">Annuler</button>
-                        </div>
-                    </div>
-                    
+                    <h2 class="form-title"><i class="fas fa-user-plus"></i> Ajouter un élève</h2>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Nom</label>
-                            <input type="text" id="lastName" placeholder="Nom de l'élève">
-                        </div>
-                        <div class="form-group">
-                            <label>Prénom</label>
-                            <input type="text" id="firstName" placeholder="Prénom de l'élève">
-                        </div>
+                        <div class="form-group"><label>Nom</label><input type="text" id="lastName" placeholder="Nom"></div>
+                        <div class="form-group"><label>Prénom</label><input type="text" id="firstName" placeholder="Prénom"></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Matricule/Table</label>
-                            <input type="text" id="matricule" placeholder="Ex: 2023001">
-                        </div>
-                        <div class="form-group">
-                            <label>Examen</label>
-                            <select id="studentExam">
-                                <option value="BEPC">BEPC</option>
-                                <option value="BAC1">BAC Première</option>
-                                <option value="BAC2">BAC Terminale</option>
-                            </select>
-                        </div>
+                        <div class="form-group"><label>Matricule</label><input type="text" id="matricule" placeholder="Numéro matricule"></div>
+                        <div class="form-group"><label>Examen</label><select id="studentExam"><option value="BEPC">BEPC</option><option value="BAC1">BAC1</option><option value="BAC2">BAC2</option></select></div>
                     </div>
-                    <button class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i> Ajouter l'élève</button>
+                    <button class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i> Ajouter</button>
                 </div>
-
                 <div class="form-section">
                     <h2 class="form-title"><i class="fas fa-users"></i> Liste des élèves</h2>
-                    <div class="table-container">
-                        <table id="studentsTable">
-                            <thead>
-                                <tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Matricule</th><th>Examen</th><th>Actions</th></tr>
-                            </thead>
-                            <tbody id="studentsList"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-container"><table id="studentsTable"><thead><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Matricule</th><th>Examen</th><th>Actions</th></tr></thead><tbody id="studentsList"></tbody></table></div>
                 </div>
             </div>
 
-            <!-- Onglet 2: Matières -->
+            <!-- Onglet Matières -->
             <div id="subjects-tab" class="tab-content">
                 <div class="form-section">
-                    <div class="data-actions">
-                        <h2 class="form-title"><i class="fas fa-book"></i> Ajouter une matière</h2>
-                        <div class="btn-group">
-                            <button class="btn btn-info btn-sm" id="importSubjectsBtn">Importer JSON</button>
-                            <button class="btn btn-warning btn-sm" id="exportSubjectsBtn">Exporter JSON</button>
-                        </div>
-                    </div>
-                    
-                    <div class="file-input-container" id="subjectsFileInput">
-                        <input type="file" id="subjectsJsonFile" accept=".json" class="file-input">
-                        <div class="import-options">
-                            <label><input type="radio" name="subjectsImportMode" value="replace" checked> Remplacer</label>
-                            <label><input type="radio" name="subjectsImportMode" value="append"> Ajouter</label>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-success" id="confirmSubjectsImport">Confirmer</button>
-                            <button class="btn btn-danger" id="cancelSubjectsImport">Annuler</button>
-                        </div>
-                    </div>
-                    
+                    <h2 class="form-title"><i class="fas fa-book"></i> Ajouter une matière</h2>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Nom de la matière</label>
-                            <input type="text" id="subjectName" placeholder="Ex: Mathématiques">
-                        </div>
-                        <div class="form-group">
-                            <label>Coefficient</label>
-                            <input type="number" id="coefficient" min="1" max="10" value="1">
-                        </div>
+                        <div class="form-group"><label>Matière</label><input type="text" id="subjectName" placeholder="Nom"></div>
+                        <div class="form-group"><label>Coefficient</label><input type="number" id="coefficient" min="1" max="10" value="1"></div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Examen concerné</label>
-                            <select id="subjectExam">
-                                <option value="BEPC">BEPC</option>
-                                <option value="BAC1">BAC Première</option>
-                                <option value="BAC2">BAC Terminale</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn btn-success" id="addSubjectBtn"><i class="fas fa-plus"></i> Ajouter la matière</button>
+                    <div class="form-row"><div class="form-group"><label>Examen</label><select id="subjectExam"><option value="BEPC">BEPC</option><option value="BAC1">BAC1</option><option value="BAC2">BAC2</option></select></div></div>
+                    <button class="btn btn-success" id="addSubjectBtn"><i class="fas fa-plus"></i> Ajouter</button>
                 </div>
-
                 <div class="form-section">
-                    <h2 class="form-title"><i class="fas fa-list-alt"></i> Liste des matières</h2>
-                    <div class="table-container">
-                        <table id="subjectsTable">
-                            <thead><tr><th>ID</th><th>Matière</th><th>Coefficient</th><th>Examen</th><th>Actions</th></tr></thead>
-                            <tbody id="subjectsList"></tbody>
-                        </table>
-                    </div>
+                    <h2 class="form-title"><i class="fas fa-list"></i> Liste des matières</h2>
+                    <div class="table-container"><table id="subjectsTable"><thead><tr><th>ID</th><th>Matière</th><th>Coeff</th><th>Examen</th><th>Actions</th></tr></thead><tbody id="subjectsList"></tbody></table></div>
                 </div>
             </div>
 
-            <!-- Onglet 3: Notes -->
+            <!-- Onglet Notes -->
             <div id="grades-tab" class="tab-content">
                 <div class="form-section">
-                    <div class="data-actions">
-                        <h2 class="form-title"><i class="fas fa-edit"></i> Enregistrer des notes</h2>
-                        <div class="btn-group">
-                            <button class="btn btn-info btn-sm" id="importGradesBtn">Importer JSON</button>
-                            <button class="btn btn-warning btn-sm" id="exportGradesBtn">Exporter JSON</button>
-                        </div>
-                    </div>
-                    
-                    <div class="file-input-container" id="gradesFileInput">
-                        <input type="file" id="gradesJsonFile" accept=".json" class="file-input">
-                        <div class="import-options">
-                            <label><input type="radio" name="gradesImportMode" value="replace" checked> Remplacer</label>
-                            <label><input type="radio" name="gradesImportMode" value="append"> Ajouter</label>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-success" id="confirmGradesImport">Confirmer</button>
-                            <button class="btn btn-danger" id="cancelGradesImport">Annuler</button>
-                        </div>
-                    </div>
-                    
+                    <h2 class="form-title"><i class="fas fa-edit"></i> Enregistrer une note</h2>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Élève</label>
-                            <select id="gradeStudent"></select>
-                        </div>
-                        <div class="form-group">
-                            <label>Matière</label>
-                            <select id="gradeSubject"></select>
-                        </div>
+                        <div class="form-group"><label>Élève</label><select id="gradeStudent"></select></div>
+                        <div class="form-group"><label>Matière</label><select id="gradeSubject"></select></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Note (sur 20)</label>
-                            <input type="number" id="gradeValue" min="0" max="20" step="0.5">
-                        </div>
-                        <div class="form-group">
-                            <label>Enseignant</label>
-                            <input type="text" id="gradeTeacher" placeholder="Nom de l'enseignant">
-                        </div>
+                        <div class="form-group"><label>Note (/20)</label><input type="number" id="gradeValue" min="0" max="20" step="0.5"></div>
+                        <div class="form-group"><label>Enseignant</label><input type="text" id="gradeTeacher" placeholder="Nom"></div>
                     </div>
-                    <button class="btn btn-success" id="addGradeBtn"><i class="fas fa-save"></i> Enregistrer la note</button>
+                    <button class="btn btn-success" id="addGradeBtn"><i class="fas fa-save"></i> Enregistrer</button>
                 </div>
-
                 <div class="form-section">
                     <h2 class="form-title"><i class="fas fa-chart-bar"></i> Notes enregistrées</h2>
-                    <div class="table-container">
-                        <table id="gradesTable">
-                            <thead><tr><th>Élève</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Enseignant</th><th>Actions</th></tr></thead>
-                            <tbody id="gradesList"></tbody>
-                        </table>
-                    </div>
+                    <div class="table-container"><table id="gradesTable"><thead><tr><th>Élève</th><th>Matière</th><th>Note</th><th>Coeff</th><th>Enseignant</th><th>Actions</th></tr></thead><tbody id="gradesList"></tbody></table></div>
                 </div>
             </div>
 
-            <!-- Onglet 4: Statistiques -->
+            <!-- Onglet Statistiques -->
             <div id="statistics-tab" class="tab-content">
                 <div class="form-section">
                     <h2 class="form-title"><i class="fas fa-chart-pie"></i> Statistiques Générales</h2>
                     <div class="stats-grid" id="generalStats"></div>
                 </div>
-
-                <div class="form-section">
-                    <h2 class="form-title"><i class="fas fa-chart-line"></i> Statistiques par Matière</h2>
-                    <div class="subject-selector">
-                        <label>Sélectionner une matière:</label>
-                        <select id="subjectStatsSelect" style="width:100%; padding:12px;">
-                            <option value="">-- Choisir une matière --</option>
-                        </select>
-                    </div>
-                    <div id="subjectStatistics" style="display:none;">
-                        <div class="subject-stats">
-                            <h3 id="selectedSubjectName"></h3>
-                            <div class="stats-grid" id="subjectStatsCards"></div>
-                            <div class="impact-analysis">
-                                <h4><i class="fas fa-calculator"></i> Analyse d'Impact</h4>
-                                <p id="impactAnalysisText"></p>
-                                <div id="studentsAffectedList"></div>
-                            </div>
-                            <h4>Distribution des Notes</h4>
-                            <div class="chart-container">
-                                <canvas id="gradesDistributionChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Onglet 5: Bulletins -->
+            <!-- Onglet Bulletins -->
             <div id="bulletin-tab" class="tab-content">
                 <div class="generate-section">
-                    <button class="generate-btn" id="generateBulletinsBtn">
-                        <i class="fas fa-file-pdf"></i> Générer tous les bulletins
-                    </button>
+                    <button class="generate-btn" id="generateBulletinsBtn"><i class="fas fa-file-pdf"></i> Générer tous les bulletins</button>
                 </div>
                 <div id="bulletinResults"></div>
             </div>
 
-            <!-- Onglet 6: Gestion des données -->
+            <!-- Onglet Données -->
             <div id="data-tab" class="tab-content">
                 <div class="form-section">
-                    <h2 class="form-title"><i class="fas fa-database"></i> Gestion Complète</h2>
+                    <h2 class="form-title"><i class="fas fa-database"></i> Gestion des données</h2>
                     <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Élèves</h3>
-                            <div class="stat-value" id="studentsCount">0</div>
-                            <button class="btn btn-warning btn-sm" id="exportAllStudentsBtn">Exporter</button>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Matières</h3>
-                            <div class="stat-value" id="subjectsCount">0</div>
-                            <button class="btn btn-warning btn-sm" id="exportAllSubjectsBtn">Exporter</button>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Notes</h3>
-                            <div class="stat-value" id="gradesCount">0</div>
-                            <button class="btn btn-warning btn-sm" id="exportAllGradesBtn">Exporter</button>
-                        </div>
+                        <div class="stat-card"><h3>Élèves</h3><div class="stat-value" id="studentsCount">0</div><button class="btn btn-warning btn-sm" id="exportStudentsDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
+                        <div class="stat-card"><h3>Matières</h3><div class="stat-value" id="subjectsCount">0</div><button class="btn btn-warning btn-sm" id="exportSubjectsDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
+                        <div class="stat-card"><h3>Notes</h3><div class="stat-value" id="gradesCount">0</div><button class="btn btn-warning btn-sm" id="exportGradesDataBtn"><i class="fas fa-download"></i> Exporter</button></div>
                     </div>
-                    
-                    <div class="btn-group" style="margin-top:20px">
+                    <div class="btn-group" style="margin-top:15px">
                         <button class="btn btn-success" id="exportAllDataBtn"><i class="fas fa-download"></i> Sauvegarde complète</button>
-                        <button class="btn btn-danger" id="resetAllDataBtn"><i class="fas fa-trash-alt"></i> Réinitialiser</button>
-                    </div>
-                    
-                    <div class="file-input-container" id="allDataFileInput" style="margin-top:20px">
-                        <input type="file" id="allDataJsonFile" accept=".json" class="file-input">
-                        <div class="import-options">
-                            <label><input type="radio" name="allDataImportMode" value="replace" checked> Remplacer</label>
-                            <label><input type="radio" name="allDataImportMode" value="append"> Ajouter</label>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-success" id="confirmAllDataImport">Confirmer</button>
-                            <button class="btn btn-danger" id="cancelAllDataImport">Annuler</button>
-                        </div>
+                        <button class="btn btn-danger" id="resetAllDataBtn"><i class="fas fa-trash-alt"></i> Réinitialiser tout</button>
                     </div>
                 </div>
             </div>
 
-            <div class="footer">
-                <p>Application de Gestion des Bulletins d'Examen Blanc &copy; 2025</p>
-            </div>
+            <div class="footer"><p>Application de Gestion des Bulletins d'Examen Blanc &copy; 2025</p></div>
         </div>
     </div>
 
     <script>
-        // === GESTION DE L'AUTHENTIFICATION ===
-        
-        // Stockage des identifiants temporaires
+        // === AUTHENTIFICATION ===
         let activeSession = null;
         let countdownInterval = null;
         
-        // Fonction pour générer des identifiants aléatoires (pour démo/administration)
-        // En production, ces identifiants seraient générés par le serveur
         const VALID_CREDENTIALS = {
-            'ADMIN_001': { password: 'BULLETIN2025', institution: 'Administration Centrale' },
+            'ADMIN_001': { password: 'BULLETIN2025', institution: 'Administration' },
             'CEG_001': { password: 'MASSEDENA2025', institution: 'CEG Massedena' },
             'LYCEE_001': { password: 'TOKIN2025', institution: 'Lycée de Tokin' }
         };
         
-        // Vérifier si une session est sauvegardée et valide
         function checkExistingSession() {
-            const savedSession = localStorage.getItem('examAppActiveSession');
-            if (savedSession) {
+            const saved = localStorage.getItem('examAppActiveSession');
+            if (saved) {
                 try {
-                    const session = JSON.parse(savedSession);
+                    const session = JSON.parse(saved);
                     if (Date.now() < session.expirationTime) {
-                        // Session encore valide
                         activeSession = session;
                         startCountdown();
                         showMainApp();
                         return true;
                     } else {
-                        // Session expirée
                         localStorage.removeItem('examAppActiveSession');
                     }
                 } catch(e) {}
@@ -1048,133 +928,80 @@
             return false;
         }
         
-        // Fonction de connexion
         function login(username, password) {
-            // Vérifier si les identifiants sont valides
             if (VALID_CREDENTIALS[username] && VALID_CREDENTIALS[username].password === password) {
-                // Créer la session (valable 6 heures)
-                const expirationTime = Date.now() + (6 * 60 * 60 * 1000);
                 activeSession = {
                     username: username,
                     institution: VALID_CREDENTIALS[username].institution,
                     loginTime: new Date().toISOString(),
-                    expirationTime: expirationTime
+                    expirationTime: Date.now() + (6 * 60 * 60 * 1000)
                 };
-                
-                // Sauvegarder la session
                 localStorage.setItem('examAppActiveSession', JSON.stringify(activeSession));
-                
-                // Démarrer le compte à rebours
                 startCountdown();
-                
-                // Afficher l'application
                 showMainApp();
-                
-                // Charger les données
                 loadFromLocalStorage();
                 updateUI();
-                
                 return true;
             }
             return false;
         }
         
-        // Fonction de déconnexion
         function logout() {
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ? La session sera fermée.')) {
-                // Nettoyer la session
+            if (confirm('Déconnexion ?')) {
                 localStorage.removeItem('examAppActiveSession');
                 activeSession = null;
-                
-                // Arrêter le compte à rebours
-                if (countdownInterval) {
-                    clearInterval(countdownInterval);
-                    countdownInterval = null;
-                }
-                
-                // Réinitialiser l'interface
-                resetAppData();
-                
-                // Revenir à l'écran de connexion
+                if (countdownInterval) clearInterval(countdownInterval);
                 document.getElementById('authOverlay').style.display = 'flex';
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('authUsername').value = '';
                 document.getElementById('authPassword').value = '';
-                
-                showAuthAlert('Déconnecté avec succès', 'success');
+                showAuthAlert('Déconnecté', 'success');
             }
         }
         
-        // Démarrer le compte à rebours
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
-            
             countdownInterval = setInterval(() => {
                 if (!activeSession) return;
-                
                 const remaining = activeSession.expirationTime - Date.now();
-                
                 if (remaining <= 0) {
-                    // Session expirée
                     clearInterval(countdownInterval);
-                    countdownInterval = null;
-                    
-                    showAuthAlert('Votre session a expiré. Veuillez vous reconnecter.', 'warning');
-                    setTimeout(() => {
-                        logout();
-                    }, 2000);
+                    showAuthAlert('Session expirée', 'warning');
+                    setTimeout(() => logout(), 2000);
                     return;
                 }
-                
-                // Calculer le temps restant
                 const hours = Math.floor(remaining / (60 * 60 * 1000));
                 const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
                 const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
-                
                 const display = document.getElementById('countdownDisplay');
-                if (display) {
-                    display.textContent = `${hours}h ${minutes}m ${seconds}s`;
-                }
+                if (display) display.textContent = `${hours}h ${minutes}m ${seconds}s`;
             }, 1000);
         }
         
-        // Afficher l'application principale
         function showMainApp() {
             document.getElementById('authOverlay').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
-            
-            if (activeSession) {
-                document.getElementById('sessionUser').textContent = activeSession.username;
-                document.getElementById('sessionInstitution').textContent = activeSession.institution;
-            }
+            document.getElementById('sessionUser').textContent = activeSession.username;
+            document.getElementById('sessionInstitution').textContent = activeSession.institution;
         }
         
-        // Afficher les alertes sur la page d'authentification
-        function showAuthAlert(message, type) {
-            const alertDiv = document.getElementById('authAlert');
-            alertDiv.textContent = message;
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 5000);
+        function showAuthAlert(msg, type) {
+            const div = document.getElementById('authAlert');
+            div.textContent = msg;
+            div.className = `alert alert-${type}`;
+            div.style.display = 'block';
+            setTimeout(() => div.style.display = 'none', 4000);
         }
         
-        // Afficher les alertes dans l'application
-        function showAlert(message, type) {
-            const alertDiv = document.getElementById('alert');
-            alertDiv.textContent = message;
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 5000);
+        function showAlert(msg, type) {
+            const div = document.getElementById('alert');
+            div.textContent = msg;
+            div.className = `alert alert-${type}`;
+            div.style.display = 'block';
+            setTimeout(() => div.style.display = 'none', 4000);
         }
         
-        // === DONNÉES DE L'APPLICATION ===
-        
+        // === DONNÉES ===
         let appData = {
             currentExam: 'BEPC',
             students: [],
@@ -1185,165 +1012,117 @@
             nextGradeId: 1
         };
         
-        let gradesChart = null;
-        
-        // Charger les données
         function loadFromLocalStorage() {
-            const savedData = localStorage.getItem('examBulletinAppData_' + (activeSession?.username || 'default'));
-            if (savedData) {
-                appData = JSON.parse(savedData);
+            const saved = localStorage.getItem('examData_' + (activeSession?.username || 'default'));
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    appData = { ...appData, ...data };
+                } catch(e) {}
             }
         }
         
-        // Sauvegarder les données
         function saveToLocalStorage() {
-            localStorage.setItem('examBulletinAppData_' + (activeSession?.username || 'default'), JSON.stringify(appData));
+            localStorage.setItem('examData_' + (activeSession?.username || 'default'), JSON.stringify(appData));
         }
         
-        // Réinitialiser les données
-        function resetAppData() {
-            appData = {
-                currentExam: 'BEPC',
-                students: [],
-                subjects: [],
-                grades: [],
-                nextStudentId: 1,
-                nextSubjectId: 1,
-                nextGradeId: 1
-            };
-            saveToLocalStorage();
+        function resetData() {
+            if (confirm('⚠️ Supprimer toutes les données ?')) {
+                appData = { currentExam: 'BEPC', students: [], subjects: [], grades: [], nextStudentId: 1, nextSubjectId: 1, nextGradeId: 1 };
+                saveToLocalStorage();
+                updateUI();
+                showAlert('Toutes les données ont été réinitialisées', 'success');
+            }
         }
         
-        // Mettre à jour l'interface
+        function exportAllData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_${new Date().toISOString().slice(0,19)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showAlert('Export effectué', 'success');
+        }
+        
+        // === FONCTIONS CRUD ===
         function updateUI() {
             renderStudents();
             renderSubjects();
             renderGrades();
-            updateStudentSelect();
-            updateSubjectSelect();
-            updateSubjectStatsSelect();
-            updateGeneralStatistics();
-            updateDataCounters();
+            updateSelects();
+            updateGeneralStats();
+            updateCounters();
         }
         
-        // Mettre à jour les compteurs
-        function updateDataCounters() {
-            document.getElementById('studentsCount').textContent = appData.students.length;
-            document.getElementById('subjectsCount').textContent = appData.subjects.length;
-            document.getElementById('gradesCount').textContent = appData.grades.length;
-        }
-        
-        // Rendu des élèves
         function renderStudents() {
             const tbody = document.getElementById('studentsList');
             tbody.innerHTML = '';
-            
             const filtered = appData.students.filter(s => s.exam === appData.currentExam);
-            
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucun élève</td></tr>';
-                return;
-            }
-            
-            filtered.forEach(student => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.id}</td>
-                    <td>${student.lastName}</td>
-                    <td>${student.firstName}</td>
-                    <td>${student.matricule}</td>
-                    <td>${student.exam}</td>
-                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteStudent(${student.id})"><i class="fas fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(row);
+            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucun élève</td></tr>'; return; }
+            filtered.forEach(s => {
+                tbody.innerHTML += `<tr><td>${s.id}</td><td>${s.lastName}</td><td>${s.firstName}</td><td>${s.matricule}</td><td>${s.exam}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteStudent(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
         
-        // Rendu des matières
         function renderSubjects() {
             const tbody = document.getElementById('subjectsList');
             tbody.innerHTML = '';
-            
             const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
-            
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Aucune matière</td></tr>';
-                return;
-            }
-            
-            filtered.forEach(subject => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${subject.id}</td>
-                    <td>${subject.name}</td>
-                    <td>${subject.coefficient}</td>
-                    <td>${subject.exam}</td>
-                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteSubject(${subject.id})"><i class="fas fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(row);
+            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Aucune matière</td></tr>'; return; }
+            filtered.forEach(s => {
+                tbody.innerHTML += `<tr><td>${s.id}</td><td>${s.name}</td><td>${s.coefficient}</td><td>${s.exam}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteSubject(${s.id})"><i class="fas fa-trash"></i></button></td></tr>`;
             });
         }
         
-        // Rendu des notes
         function renderGrades() {
             const tbody = document.getElementById('gradesList');
             tbody.innerHTML = '';
-            
-            const filtered = appData.grades.filter(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
+            const filtered = appData.grades.filter(g => {
+                const student = appData.students.find(s => s.id === g.studentId);
                 return student && student.exam === appData.currentExam;
             });
-            
-            if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucune note</td></tr>';
-                return;
-            }
-            
-            filtered.forEach(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
-                const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                if (!student || !subject) return;
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${subject.name}</td>
-                    <td>${grade.value}/20</td>
-                    <td>${subject.coefficient}</td>
-                    <td>${grade.teacher}</td>
-                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button></td>
-                `;
-                tbody.appendChild(row);
+            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucune note</td></tr>'; return; }
+            filtered.forEach(g => {
+                const student = appData.students.find(s => s.id === g.studentId);
+                const subject = appData.subjects.find(s => s.id === g.subjectId);
+                if (student && subject) {
+                    tbody.innerHTML += `<tr><td>${student.firstName} ${student.lastName}</td><td>${subject.name}</td><td>${g.value}/20</td><td>${subject.coefficient}</td><td>${g.teacher}</td><td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteGrade(${g.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+                }
             });
         }
         
-        // Ajouter un élève
+        function updateSelects() {
+            const studentSelect = document.getElementById('gradeStudent');
+            studentSelect.innerHTML = '<option value="">Choisir</option>';
+            appData.students.filter(s => s.exam === appData.currentExam).forEach(s => {
+                studentSelect.innerHTML += `<option value="${s.id}">${s.firstName} ${s.lastName}</option>`;
+            });
+            
+            const subjectSelect = document.getElementById('gradeSubject');
+            subjectSelect.innerHTML = '<option value="">Choisir</option>';
+            appData.subjects.filter(s => s.exam === appData.currentExam).forEach(s => {
+                subjectSelect.innerHTML += `<option value="${s.id}">${s.name} (Coeff ${s.coefficient})</option>`;
+            });
+        }
+        
         function addStudent() {
             const lastName = document.getElementById('lastName').value.trim();
             const firstName = document.getElementById('firstName').value.trim();
             const matricule = document.getElementById('matricule').value.trim();
             const exam = document.getElementById('studentExam').value;
-            
-            if (!lastName || !firstName || !matricule) {
-                showAlert('Veuillez remplir tous les champs', 'error');
-                return;
-            }
-            
-            const student = {
-                id: appData.nextStudentId++,
-                lastName, firstName, matricule, exam
-            };
-            appData.students.push(student);
+            if (!lastName || !firstName || !matricule) { showAlert('Remplissez tous les champs', 'error'); return; }
+            appData.students.push({ id: appData.nextStudentId++, lastName, firstName, matricule, exam });
             saveToLocalStorage();
             updateUI();
-            
             document.getElementById('lastName').value = '';
             document.getElementById('firstName').value = '';
             document.getElementById('matricule').value = '';
             showAlert('Élève ajouté', 'success');
         }
         
-        // Supprimer un élève
         function deleteStudent(id) {
             if (confirm('Supprimer cet élève ?')) {
                 appData.students = appData.students.filter(s => s.id !== id);
@@ -1354,31 +1133,18 @@
             }
         }
         
-        // Ajouter une matière
         function addSubject() {
             const name = document.getElementById('subjectName').value.trim();
             const coefficient = parseInt(document.getElementById('coefficient').value);
             const exam = document.getElementById('subjectExam').value;
-            
-            if (!name || coefficient < 1) {
-                showAlert('Nom et coefficient valides requis', 'error');
-                return;
-            }
-            
-            const subject = {
-                id: appData.nextSubjectId++,
-                name, coefficient, exam
-            };
-            appData.subjects.push(subject);
+            if (!name || coefficient < 1) { showAlert('Nom et coefficient valides', 'error'); return; }
+            appData.subjects.push({ id: appData.nextSubjectId++, name, coefficient, exam });
             saveToLocalStorage();
             updateUI();
-            
             document.getElementById('subjectName').value = '';
-            document.getElementById('coefficient').value = '1';
             showAlert('Matière ajoutée', 'success');
         }
         
-        // Supprimer une matière
         function deleteSubject(id) {
             if (confirm('Supprimer cette matière ?')) {
                 appData.subjects = appData.subjects.filter(s => s.id !== id);
@@ -1389,40 +1155,29 @@
             }
         }
         
-        // Ajouter une note
         function addGrade() {
             const studentId = parseInt(document.getElementById('gradeStudent').value);
             const subjectId = parseInt(document.getElementById('gradeSubject').value);
             const value = parseFloat(document.getElementById('gradeValue').value);
             const teacher = document.getElementById('gradeTeacher').value.trim();
-            
             if (!studentId || !subjectId || isNaN(value) || value < 0 || value > 20 || !teacher) {
-                showAlert('Veuillez remplir tous les champs', 'error');
+                showAlert('Tous les champs sont requis', 'error');
                 return;
             }
-            
             const existing = appData.grades.findIndex(g => g.studentId === studentId && g.subjectId === subjectId);
-            
             if (existing !== -1) {
-                appData.grades[existing].value = value;
-                appData.grades[existing].teacher = teacher;
+                appData.grades[existing] = { ...appData.grades[existing], value, teacher };
                 showAlert('Note mise à jour', 'success');
             } else {
-                appData.grades.push({
-                    id: appData.nextGradeId++,
-                    studentId, subjectId, value, teacher
-                });
+                appData.grades.push({ id: appData.nextGradeId++, studentId, subjectId, value, teacher });
                 showAlert('Note ajoutée', 'success');
             }
-            
             saveToLocalStorage();
             updateUI();
-            
             document.getElementById('gradeValue').value = '';
             document.getElementById('gradeTeacher').value = '';
         }
         
-        // Supprimer une note
         function deleteGrade(id) {
             if (confirm('Supprimer cette note ?')) {
                 appData.grades = appData.grades.filter(g => g.id !== id);
@@ -1432,175 +1187,131 @@
             }
         }
         
-        // Mettre à jour les selects
-        function updateStudentSelect() {
-            const select = document.getElementById('gradeStudent');
-            select.innerHTML = '<option value="">Choisir</option>';
-            const filtered = appData.students.filter(s => s.exam === appData.currentExam);
-            filtered.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.firstName} ${s.lastName}</option>`;
-            });
-        }
-        
-        function updateSubjectSelect() {
-            const select = document.getElementById('gradeSubject');
-            select.innerHTML = '<option value="">Choisir</option>';
-            const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
-            filtered.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.name} (Coeff ${s.coefficient})</option>`;
-            });
-        }
-        
-        function updateSubjectStatsSelect() {
-            const select = document.getElementById('subjectStatsSelect');
-            select.innerHTML = '<option value="">-- Choisir --</option>';
-            const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
-            filtered.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
-            });
-        }
-        
-        // Statistiques générales
-        function updateGeneralStatistics() {
+        function updateGeneralStats() {
             const container = document.getElementById('generalStats');
-            const filteredStudents = appData.students.filter(s => s.exam === appData.currentExam);
-            const filteredSubjects = appData.subjects.filter(s => s.exam === appData.currentExam);
-            
-            let totalAverage = 0;
-            let studentsWithAvg = 0;
-            let passing = 0;
-            
-            filteredStudents.forEach(student => {
-                const grades = appData.grades.filter(g => g.studentId === student.id);
-                let totalPoints = 0, totalCoeff = 0;
-                
+            const students = appData.students.filter(s => s.exam === appData.currentExam);
+            const subjects = appData.subjects.filter(s => s.exam === appData.currentExam);
+            let totalAvg = 0, count = 0, passing = 0;
+            students.forEach(s => {
+                const grades = appData.grades.filter(g => g.studentId === s.id);
+                let points = 0, coeffs = 0;
                 grades.forEach(g => {
-                    const subject = appData.subjects.find(s => s.id === g.subjectId);
-                    if (subject) {
-                        totalPoints += g.value * subject.coefficient;
-                        totalCoeff += subject.coefficient;
-                    }
+                    const sub = appData.subjects.find(subj => subj.id === g.subjectId);
+                    if (sub) { points += g.value * sub.coefficient; coeffs += sub.coefficient; }
                 });
-                
-                if (totalCoeff > 0) {
-                    const avg = totalPoints / totalCoeff;
-                    totalAverage += avg;
-                    studentsWithAvg++;
+                if (coeffs > 0) {
+                    const avg = points / coeffs;
+                    totalAvg += avg;
+                    count++;
                     if (avg >= 10) passing++;
                 }
             });
-            
-            const generalAvg = studentsWithAvg > 0 ? (totalAverage / studentsWithAvg).toFixed(2) : 0;
-            const passRate = studentsWithAvg > 0 ? Math.round((passing / studentsWithAvg) * 100) : 0;
-            
+            const generalAvg = count > 0 ? (totalAvg / count).toFixed(2) : 0;
+            const passRate = count > 0 ? Math.round((passing / count) * 100) : 0;
             container.innerHTML = `
-                <div class="stat-card"><h3>Élèves</h3><div class="stat-value">${filteredStudents.length}</div></div>
-                <div class="stat-card"><h3>Matières</h3><div class="stat-value">${filteredSubjects.length}</div></div>
+                <div class="stat-card"><h3>Élèves</h3><div class="stat-value">${students.length}</div></div>
+                <div class="stat-card"><h3>Matières</h3><div class="stat-value">${subjects.length}</div></div>
                 <div class="stat-card"><h3>Moyenne Générale</h3><div class="stat-value">${generalAvg}/20</div><div class="progress-bar"><div class="progress-fill progress-success" style="width:${passRate}%"></div></div><p>Taux réussite: ${passRate}%</p></div>
             `;
         }
         
-        // Générer les bulletins
+        function updateCounters() {
+            document.getElementById('studentsCount').textContent = appData.students.length;
+            document.getElementById('subjectsCount').textContent = appData.subjects.length;
+            document.getElementById('gradesCount').textContent = appData.grades.length;
+        }
+        
+        // === GÉNÉRATION DES BULLETINS AVEC IMPRESSION ===
         function generateBulletins() {
             const container = document.getElementById('bulletinResults');
             container.innerHTML = '';
-            
             const students = appData.students.filter(s => s.exam === appData.currentExam);
+            if (students.length === 0) { showAlert('Aucun élève', 'error'); return; }
             
-            if (students.length === 0) {
-                showAlert('Aucun élève', 'error');
-                return;
-            }
-            
-            const studentsWithAvg = students.map(student => {
+            const studentsWithData = students.map(student => {
                 const grades = appData.grades.filter(g => g.studentId === student.id);
-                let totalPoints = 0, totalCoeff = 0;
-                let subjectGrades = [];
-                
+                let points = 0, coeffs = 0;
+                const gradeDetails = [];
                 grades.forEach(g => {
                     const subject = appData.subjects.find(s => s.id === g.subjectId);
                     if (subject) {
-                        totalPoints += g.value * subject.coefficient;
-                        totalCoeff += subject.coefficient;
-                        subjectGrades.push({ subject: subject.name, coeff: subject.coefficient, grade: g.value, teacher: g.teacher });
+                        points += g.value * subject.coefficient;
+                        coeffs += subject.coefficient;
+                        gradeDetails.push({ subject: subject.name, coeff: subject.coefficient, grade: g.value, teacher: g.teacher });
                     }
                 });
-                
-                const avg = totalCoeff > 0 ? totalPoints / totalCoeff : 0;
-                return { ...student, avg: avg.toFixed(2), subjectGrades, hasGrades: grades.length > 0 };
+                const avg = coeffs > 0 ? points / coeffs : 0;
+                return { ...student, avg: avg.toFixed(2), gradeDetails, hasGrades: grades.length > 0 };
             });
             
-            studentsWithAvg.sort((a, b) => parseFloat(b.avg) - parseFloat(a.avg));
+            studentsWithData.sort((a, b) => parseFloat(b.avg) - parseFloat(a.avg));
             
-            studentsWithAvg.forEach((student, idx) => {
+            studentsWithData.forEach((student, idx) => {
                 const bulletin = document.createElement('div');
                 bulletin.className = 'bulletin-section';
-                bulletin.style.display = 'block';
-                bulletin.style.marginBottom = '30px';
-                
                 let gradesHtml = '';
-                student.subjectGrades.forEach(g => {
-                    const gradeClass = g.grade < 10 ? 'warning' : '';
-                    gradesHtml += `<tr><td>${g.subject}</td><td>${g.coeff}</td><td class="${gradeClass}">${g.grade}/20</td><td>${g.teacher}</td></tr>`;
+                student.gradeDetails.forEach(g => {
+                    const warningClass = g.grade < 10 ? 'warning' : '';
+                    gradesHtml += `<tr><td>${g.subject}</td><td>${g.coeff}</td><td class="${warningClass}">${g.grade}/20</td><td>${g.teacher}</td></tr>`;
                 });
-                
                 bulletin.innerHTML = `
-                    <div class="bulletin-header">
-                        <h2>BULLETIN EXAMEN BLANC - ${student.exam}</h2>
-                    </div>
+                    <div class="bulletin-header"><h2>BULLETIN EXAMEN BLANC - ${student.exam}</h2><p>Année 2025-2026</p></div>
                     <div class="student-info">
                         <div><p><strong>Nom:</strong> ${student.lastName}</p><p><strong>Prénom:</strong> ${student.firstName}</p><p><strong>Matricule:</strong> ${student.matricule}</p></div>
                         <div><p class="average">Moyenne: ${student.avg}/20 <span class="ranking">Rang: ${idx+1}/${students.length}</span></p></div>
                     </div>
-                    <table class="grades-table"><thead><tr><th>Matière</th><th>Coeff</th><th>Note</th><th>Enseignant</th></tr></thead><tbody>${gradesHtml}</tbody></table>
+                    <table class="grades-table"><thead><tr><th>Matière</th><th>Coeff</th><th>Note</th><th>Enseignant</th></tr></thead><tbody>${gradesHtml || '<tr><td colspan="4">Aucune note</td></tr>'}</tbody></table>
                     <div style="margin-top:20px"><p><strong>Appréciation:</strong> ${getAppreciation(parseFloat(student.avg))}</p></div>
-                    <div style="text-align:center; margin-top:20px"><button class="btn" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer</button></div>
+                    <div style="text-align:center; margin-top:25px; padding-top:15px; border-top:1px solid #ddd;">
+                        <button class="btn btn-info" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer ce bulletin</button>
+                    </div>
                 `;
                 container.appendChild(bulletin);
             });
-            
             showAlert(`${students.length} bulletin(s) généré(s)`, 'success');
         }
         
         function getAppreciation(avg) {
-            if (avg >= 16) return "Excellent !";
-            if (avg >= 14) return "Très bien !";
-            if (avg >= 12) return "Bien";
-            if (avg >= 10) return "Satisfaisant";
-            return "Insuffisant, doit progresser";
+            if (avg >= 16) return "Excellent travail ! Félicitations !";
+            if (avg >= 14) return "Très bon travail, continuez ainsi !";
+            if (avg >= 12) return "Bon travail, quelques progrès possibles.";
+            if (avg >= 10) return "Satisfaisant, des efforts sont nécessaires.";
+            if (avg >= 8) return "Insuffisant, doit travailler davantage.";
+            return "Très insuffisant, un redoublement d'efforts est nécessaire.";
         }
         
-        function printBulletin(btn) {
-            const bulletin = btn.closest('.bulletin-section');
-            const original = document.body.innerHTML;
-            document.body.innerHTML = bulletin.innerHTML;
-            window.print();
-            document.body.innerHTML = original;
-            location.reload();
+        function printBulletin(button) {
+            const bulletin = button.closest('.bulletin-section').cloneNode(true);
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Bulletin - Impression</title>
+                    <meta charset="UTF-8">
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+                        body { padding: 20px; }
+                        .bulletin-section { max-width: 800px; margin: 0 auto; }
+                        .bulletin-header { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #3498db; }
+                        .student-info { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+                        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+                        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                        th { background: #f8f9fa; }
+                        .warning { color: #e74c3c; font-weight: bold; }
+                        .average { font-size: 1.2rem; font-weight: bold; }
+                        .ranking { background: #2c3e50; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px; }
+                        @media print { button { display: none; } }
+                    </style>
+                </head>
+                <body>${bulletin.outerHTML}</body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
         }
         
-        // Exports simplifiés
-        function exportAllData() {
-            const data = JSON.stringify(appData, null, 2);
-            const blob = new Blob([data], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `backup_${new Date().toISOString().slice(0,19)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showAlert('Export effectué', 'success');
-        }
-        
-        function resetAllData() {
-            if (confirm('⚠️ Supprimer TOUTES les données ?')) {
-                resetAppData();
-                updateUI();
-                showAlert('Données réinitialisées', 'success');
-            }
-        }
-        
-        // Événements
+        // === INITIALISATION ===
         document.addEventListener('DOMContentLoaded', () => {
             if (!checkExistingSession()) {
                 document.getElementById('authOverlay').style.display = 'flex';
@@ -1611,15 +1322,8 @@
                 e.preventDefault();
                 const username = document.getElementById('authUsername').value.trim();
                 const password = document.getElementById('authPassword').value.trim();
-                
-                if (login(username, password)) {
-                    showAuthAlert('Connexion réussie !', 'success');
-                    setTimeout(() => {
-                        document.getElementById('authOverlay').style.display = 'none';
-                    }, 500);
-                } else {
-                    showAuthAlert('Identifiants incorrects', 'error');
-                }
+                if (login(username, password)) showAuthAlert('Connexion réussie', 'success');
+                else showAuthAlert('Identifiants incorrects', 'error');
             });
             
             document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -1629,16 +1333,18 @@
             document.getElementById('addGradeBtn').addEventListener('click', addGrade);
             document.getElementById('generateBulletinsBtn').addEventListener('click', generateBulletins);
             document.getElementById('exportAllDataBtn').addEventListener('click', exportAllData);
-            document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+            document.getElementById('resetAllDataBtn').addEventListener('click', resetData);
+            document.getElementById('exportStudentsDataBtn').addEventListener('click', () => exportAllData());
+            document.getElementById('exportSubjectsDataBtn').addEventListener('click', () => exportAllData());
+            document.getElementById('exportGradesDataBtn').addEventListener('click', () => exportAllData());
             
-            // Onglets
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
-                    if (this.dataset.tab === 'statistics') updateGeneralStatistics();
+                    if (this.dataset.tab === 'statistics') updateGeneralStats();
                 });
             });
             
@@ -1650,15 +1356,12 @@
                     updateUI();
                 });
             });
-            
-            document.getElementById('subjectStatsSelect').addEventListener('change', function() {
-                const subjectId = parseInt(this.value);
-                if (subjectId) {
-                    document.getElementById('subjectStatistics').style.display = 'block';
-                    // Update subject stats
-                }
-            });
         });
+        
+        window.deleteStudent = deleteStudent;
+        window.deleteSubject = deleteSubject;
+        window.deleteGrade = deleteGrade;
+        window.printBulletin = printBulletin;
     </script>
 </body>
 </html>
