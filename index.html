@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des Bulletins d'Examen Blanc</title>
+    <title>Gestion des Bulletins d'Examen Blanc - Accès Sécurisé</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -19,6 +19,214 @@
             line-height: 1.6;
         }
 
+        /* Page d'authentification */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header .logo {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .auth-header h2 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .auth-header p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .auth-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .auth-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .expiry-info {
+            background: #e8f4fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .expiry-info i {
+            margin-right: 5px;
+            color: #e74c3c;
+        }
+
+        /* Contenu principal (masqué par défaut) */
+        .main-app {
+            display: none;
+        }
+
+        .session-info-bar {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .session-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .session-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .countdown-timer {
+            background: rgba(0,0,0,0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Styles existants pour l'application */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -69,23 +277,6 @@
         .header-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-btn-return {
-            background: #2ecc71;
-        }
-
-        .header-btn-return:hover {
-            background: #27ae60;
-        }
-
-        .header-btn-close {
-            background: #e74c3c;
-        }
-
-        .header-btn-close:hover {
-            background: #c0392b;
         }
 
         h1 {
@@ -98,21 +289,18 @@
             opacity: 0.9;
         }
 
-        .logo {
-            font-size: 2.5rem;
-        }
-
         .exam-selector {
             display: flex;
             justify-content: center;
             margin: 20px 0 30px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .exam-btn {
             background: white;
             border: none;
             padding: 12px 25px;
-            margin: 0 10px;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
@@ -127,7 +315,6 @@
 
         .exam-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
 
         .form-section {
@@ -146,11 +333,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-        .form-title i {
-            margin-right: 10px;
-            color: #3498db;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .form-row {
@@ -223,18 +407,6 @@
             background: #f39c12;
         }
 
-        .btn-warning:hover {
-            background: #d68910;
-        }
-
-        .btn-info {
-            background: #17a2b8;
-        }
-
-        .btn-info:hover {
-            background: #138496;
-        }
-
         .btn-group {
             display: flex;
             gap: 10px;
@@ -296,12 +468,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
         }
 
         .generate-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.4);
         }
 
         .bulletin-section {
@@ -311,52 +481,6 @@
             padding: 30px;
             margin-top: 30px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .bulletin-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #3498db;
-        }
-
-        .student-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-
-        .grades-table {
-            margin-bottom: 30px;
-        }
-
-        .warning {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        .average {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .ranking {
-            background: #2c3e50;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            margin-left: 10px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            color: #7f8c8d;
-            font-size: 0.9rem;
         }
 
         .tabs {
@@ -392,32 +516,6 @@
             display: block;
         }
 
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .alert-success {
-            background-color: #d5edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        /* Nouvelles styles pour les statistiques */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -437,13 +535,6 @@
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .stat-card h3 i {
-            margin-right: 10px;
-            color: #3498db;
         }
 
         .stat-value {
@@ -452,24 +543,6 @@
             color: #2c3e50;
             text-align: center;
             margin: 20px 0;
-        }
-
-        .stat-detail {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .stat-label {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .stat-number {
-            font-weight: bold;
-            color: #3498db;
         }
 
         .progress-bar {
@@ -490,56 +563,17 @@
             background-color: #2ecc71;
         }
 
-        .progress-warning {
-            background-color: #f39c12;
-        }
-
-        .progress-danger {
-            background-color: #e74c3c;
-        }
-
-        .subject-selector {
-            margin-bottom: 20px;
-        }
-
-        .subject-selector select {
-            max-width: 400px;
-            font-size: 1.1rem;
-            padding: 15px;
-        }
-
-        .subject-stats {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .impact-analysis {
-            background: #f8f9fa;
-            border-left: 4px solid #3498db;
+        .file-input-container {
+            display: none;
+            margin-top: 20px;
             padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 5px 5px 0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 2px dashed #ddd;
         }
 
-        .impact-analysis h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .impact-analysis h4 i {
-            margin-right: 10px;
-            color: #3498db;
-        }
-
-        .students-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 15px;
+        .file-input-container.active {
+            display: block;
         }
 
         .student-item {
@@ -548,11 +582,6 @@
             align-items: center;
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
-            transition: background 0.3s;
-        }
-
-        .student-item:hover {
-            background-color: #f9f9f9;
         }
 
         .student-name {
@@ -585,54 +614,15 @@
         .chart-container {
             height: 300px;
             margin: 20px 0;
-            position: relative;
         }
 
-        .file-input-container {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            border: 2px dashed #ddd;
-        }
-
-        .file-input-container.active {
-            display: block;
-        }
-
-        .file-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .import-options {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .import-option {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .data-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
@@ -640,531 +630,551 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
-            .logo {
-                margin-top: 15px;
-            }
-            
+
             .header-buttons {
                 position: static;
                 justify-content: center;
                 margin-top: 15px;
             }
-            
-            .exam-selector {
-                flex-wrap: wrap;
-            }
-            
-            .exam-btn {
-                margin-bottom: 10px;
-            }
-            
-            .form-row {
+
+            .session-info-bar {
                 flex-direction: column;
+                text-align: center;
             }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .data-actions {
-                flex-direction: column;
-                align-items: flex-start;
+
+            .session-info {
+                justify-content: center;
             }
         }
     </style>
-    <!-- Chart.js pour les graphiques -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-buttons">
-                <button class="header-btn header-btn-return" id="returnBtn">
-                    <i class="fas fa-arrow-left"></i> Retour
-                </button>
-                <button class="header-btn header-btn-close" id="closeBtn">
-                    <i class="fas fa-times"></i> Fermer
-                </button>
-            </div>
-            <div class="header-content">
-                <div>
-                    <h1><i class="fas fa-graduation-cap"></i> Gestion des Bulletins d'Examen Blanc</h1>
-                    <p class="subtitle">BEPC | BAC1 | BAC2 - Génération automatique des bulletins et classement</p>
-                </div>
+    <!-- Page d'authentification -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-container">
+            <div class="auth-header">
                 <div class="logo">
-                    <i class="fas fa-file-contract"></i>
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
+                <h2>Accès Sécurisé</h2>
+                <p>Générateur de Bulletins d'Examen Blanc</p>
             </div>
-        </header>
-
-        <div class="exam-selector">
-            <button class="exam-btn active" data-exam="BEPC">BEPC</button>
-            <button class="exam-btn" data-exam="BAC1">BAC Première</button>
-            <button class="exam-btn" data-exam="BAC2">BAC Terminale</button>
-        </div>
-
-        <div class="tabs">
-            <div class="tab active" data-tab="students">Élèves</div>
-            <div class="tab" data-tab="subjects">Matières</div>
-            <div class="tab" data-tab="grades">Notes</div>
-            <div class="tab" data-tab="statistics">Statistiques</div>
-            <div class="tab" data-tab="bulletin">Bulletins</div>
-            <div class="tab" data-tab="data">Gestion des Données</div>
-        </div>
-
-        <div id="alert" class="alert"></div>
-
-        <!-- Onglet 1: Formulaire des élèves -->
-        <div id="students-tab" class="tab-content active">
-            <div class="form-section">
-                <div class="data-actions">
-                    <h2 class="form-title"><i class="fas fa-user-plus"></i> Ajouter un élève</h2>
-                    <div class="btn-group">
-                        <button class="btn btn-info btn-sm" id="importStudentsBtn">
-                            <i class="fas fa-file-import"></i> Importer JSON
-                        </button>
-                        <button class="btn btn-warning btn-sm" id="exportStudentsBtn">
-                            <i class="fas fa-file-export"></i> Exporter JSON
-                        </button>
-                    </div>
+            
+            <div id="authAlert" class="alert"></div>
+            
+            <form id="authForm" class="auth-form">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Identifiant</label>
+                    <input type="text" id="authUsername" placeholder="Entrez votre identifiant" required>
                 </div>
-                
-                <div class="file-input-container" id="studentsFileInput">
-                    <input type="file" id="studentsJsonFile" accept=".json" class="file-input">
-                    <div class="import-options">
-                        <label class="import-option">
-                            <input type="radio" name="studentsImportMode" value="replace" checked> Remplacer les données
-                        </label>
-                        <label class="import-option">
-                            <input type="radio" name="studentsImportMode" value="append"> Ajouter aux données
-                        </label>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success" id="confirmStudentsImport">
-                            <i class="fas fa-check"></i> Confirmer l'import
-                        </button>
-                        <button class="btn btn-danger" id="cancelStudentsImport">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
+                <div class="form-group">
+                    <label><i class="fas fa-key"></i> Mot de passe</label>
+                    <input type="password" id="authPassword" placeholder="Entrez votre mot de passe" required>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="lastName">Nom</label>
-                        <input type="text" id="lastName" placeholder="Entrez le nom de l'élève">
-                    </div>
-                    <div class="form-group">
-                        <label for="firstName">Prénom</label>
-                        <input type="text" id="firstName" placeholder="Entrez le prénom de l'élève">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="matricule">Numéro matricule / Table</label>
-                        <input type="text" id="matricule" placeholder="Ex: 2023001 ou Table 12">
-                    </div>
-                    <div class="form-group">
-                        <label for="studentExam">Examen</label>
-                        <select id="studentExam">
-                            <option value="BEPC">BEPC</option>
-                            <option value="BAC1">BAC Première</option>
-                            <option value="BAC2">BAC Terminale</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i> Ajouter l'élève</button>
-            </div>
-
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-users"></i> Liste des élèves</h2>
-                <div class="table-container">
-                    <table id="studentsTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom</th>
-                                <th>Prénom</th>
-                                <th>Matricule/Table</th>
-                                <th>Examen</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="studentsList">
-                            <!-- Les élèves seront ajoutés ici dynamiquement -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Onglet 2: Formulaire des matières -->
-        <div id="subjects-tab" class="tab-content">
-            <div class="form-section">
-                <div class="data-actions">
-                    <h2 class="form-title"><i class="fas fa-book"></i> Ajouter une matière</h2>
-                    <div class="btn-group">
-                        <button class="btn btn-info btn-sm" id="importSubjectsBtn">
-                            <i class="fas fa-file-import"></i> Importer JSON
-                        </button>
-                        <button class="btn btn-warning btn-sm" id="exportSubjectsBtn">
-                            <i class="fas fa-file-export"></i> Exporter JSON
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="file-input-container" id="subjectsFileInput">
-                    <input type="file" id="subjectsJsonFile" accept=".json" class="file-input">
-                    <div class="import-options">
-                        <label class="import-option">
-                            <input type="radio" name="subjectsImportMode" value="replace" checked> Remplacer les données
-                        </label>
-                        <label class="import-option">
-                            <input type="radio" name="subjectsImportMode" value="append"> Ajouter aux données
-                        </label>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success" id="confirmSubjectsImport">
-                            <i class="fas fa-check"></i> Confirmer l'import
-                        </button>
-                        <button class="btn btn-danger" id="cancelSubjectsImport">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="subjectName">Nom de la matière</label>
-                        <input type="text" id="subjectName" placeholder="Ex: Mathématiques">
-                    </div>
-                    <div class="form-group">
-                        <label for="coefficient">Coefficient</label>
-                        <input type="number" id="coefficient" min="1" max="10" value="1">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="subjectExam">Examen concerné</label>
-                        <select id="subjectExam">
-                            <option value="BEPC">BEPC</option>
-                            <option value="BAC1">BAC Première</option>
-                            <option value="BAC2">BAC Terminale</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn btn-success" id="addSubjectBtn"><i class="fas fa-plus"></i> Ajouter la matière</button>
-            </div>
-
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-list-alt"></i> Liste des matières</h2>
-                <div class="table-container">
-                    <table id="subjectsTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Matière</th>
-                                <th>Coefficient</th>
-                                <th>Examen</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="subjectsList">
-                            <!-- Les matières seront ajoutées ici dynamiquement -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Onglet 3: Formulaire des notes -->
-        <div id="grades-tab" class="tab-content">
-            <div class="form-section">
-                <div class="data-actions">
-                    <h2 class="form-title"><i class="fas fa-edit"></i> Enregistrer des notes</h2>
-                    <div class="btn-group">
-                        <button class="btn btn-info btn-sm" id="importGradesBtn">
-                            <i class="fas fa-file-import"></i> Importer JSON
-                        </button>
-                        <button class="btn btn-warning btn-sm" id="exportGradesBtn">
-                            <i class="fas fa-file-export"></i> Exporter JSON
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="file-input-container" id="gradesFileInput">
-                    <input type="file" id="gradesJsonFile" accept=".json" class="file-input">
-                    <div class="import-options">
-                        <label class="import-option">
-                            <input type="radio" name="gradesImportMode" value="replace" checked> Remplacer les données
-                        </label>
-                        <label class="import-option">
-                            <input type="radio" name="gradesImportMode" value="append"> Ajouter aux données
-                        </label>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success" id="confirmGradesImport">
-                            <i class="fas fa-check"></i> Confirmer l'import
-                        </button>
-                        <button class="btn btn-danger" id="cancelGradesImport">
-                            <i class="fas fa-times"></i> Annuler
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="gradeStudent">Élève</label>
-                        <select id="gradeStudent">
-                            <!-- Les élèves seront ajoutés ici dynamiquement -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="gradeSubject">Matière</label>
-                        <select id="gradeSubject">
-                            <!-- Les matières seront ajoutées ici dynamiquement -->
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="gradeValue">Note (sur 20)</label>
-                        <input type="number" id="gradeValue" min="0" max="20" step="0.5" placeholder="Ex: 15.5">
-                    </div>
-                    <div class="form-group">
-                        <label for="gradeTeacher">Enseignant</label>
-                        <input type="text" id="gradeTeacher" placeholder="Nom de l'enseignant">
-                    </div>
-                </div>
-                <button class="btn btn-success" id="addGradeBtn"><i class="fas fa-save"></i> Enregistrer la note</button>
-            </div>
-
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-chart-bar"></i> Notes enregistrées</h2>
-                <div class="table-container">
-                    <table id="gradesTable">
-                        <thead>
-                            <tr>
-                                <th>Élève</th>
-                                <th>Matière</th>
-                                <th>Note</th>
-                                <th>Coefficient</th>
-                                <th>Enseignant</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gradesList">
-                            <!-- Les notes seront ajoutées ici dynamiquement -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ONGLET 4: Statistiques -->
-        <div id="statistics-tab" class="tab-content">
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-chart-pie"></i> Statistiques Générales</h2>
-                
-                <div class="stats-grid" id="generalStats">
-                    <!-- Les statistiques générales seront générées ici -->
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-chart-line"></i> Statistiques par Matière</h2>
-                
-                <div class="subject-selector">
-                    <label for="subjectStatsSelect">Sélectionner une matière pour les analyses détaillées:</label>
-                    <select id="subjectStatsSelect" class="form-control">
-                        <option value="">-- Choisir une matière --</option>
-                        <!-- Les matières seront ajoutées dynamiquement -->
-                    </select>
-                </div>
-
-                <div id="subjectStatistics" style="display: none;">
-                    <div class="subject-stats">
-                        <h3 id="selectedSubjectName"></h3>
-                        
-                        <div class="stats-grid" id="subjectStatsCards">
-                            <!-- Les statistiques de la matière seront générées ici -->
-                        </div>
-
-                        <div class="impact-analysis">
-                            <h4><i class="fas fa-calculator"></i> Analyse d'Impact des Notes</h4>
-                            <p id="impactAnalysisText"></p>
-                            <div id="studentsAffectedList"></div>
-                        </div>
-
-                        <h4><i class="fas fa-chart-bar"></i> Distribution des Notes</h4>
-                        <div class="chart-container">
-                            <canvas id="gradesDistributionChart"></canvas>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <h4><i class="fas fa-exclamation-triangle"></i> Élèves en Difficulté (Note < 10)</h4>
-                                <div class="students-list" id="studentsInDifficulty"></div>
-                            </div>
-                            <div class="form-group">
-                                <h4><i class="fas fa-trophy"></i> Meilleurs Élèves (Note ≥ 15)</h4>
-                                <div class="students-list" id="topStudents"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Onglet 5: Génération des bulletins -->
-        <div id="bulletin-tab" class="tab-content">
-            <div class="generate-section">
-                <button class="generate-btn" id="generateBulletinsBtn">
-                    <i class="fas fa-file-pdf"></i> Générer tous les bulletins
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
                 </button>
-                <p class="subtitle" style="margin-top: 15px;">Les bulletins seront générés avec le classement des élèves par moyenne</p>
+            </form>
+            
+            <div class="expiry-info">
+                <i class="fas fa-hourglass-half"></i> Les identifiants sont valables 6 heures
             </div>
-
-            <div id="bulletinResults">
-                <!-- Les bulletins générés apparaîtront ici -->
+            
+            <div class="auth-footer">
+                <p>Contactez l'administrateur pour obtenir vos identifiants</p>
+                <p><i class="fab fa-whatsapp"></i> +228 92 87 16 05</p>
             </div>
         </div>
+    </div>
 
-        <!-- NOUVEL ONGLET: Gestion des données -->
-        <div id="data-tab" class="tab-content">
-            <div class="form-section">
-                <h2 class="form-title"><i class="fas fa-database"></i> Gestion Complète des Données</h2>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3><i class="fas fa-users"></i> Données des Élèves</h3>
-                        <div class="stat-value" id="studentsCount">0</div>
-                        <p>Nombre total d'élèves enregistrés</p>
-                        <div class="export-buttons">
-                            <button class="btn btn-warning btn-sm" id="exportAllStudentsBtn">
-                                <i class="fas fa-file-export"></i> Exporter tous les élèves
-                            </button>
-                            <button class="btn btn-info btn-sm" id="importAllStudentsBtn">
-                                <i class="fas fa-file-import"></i> Importer des élèves
-                            </button>
-                        </div>
+    <!-- Application principale (masquée par défaut) -->
+    <div id="mainApp" class="main-app">
+        <div class="container">
+            <!-- Barre d'information de session -->
+            <div class="session-info-bar">
+                <div class="session-info">
+                    <span class="session-badge"><i class="fas fa-user-check"></i> <span id="sessionUser"></span></span>
+                    <span class="session-badge"><i class="fas fa-building"></i> <span id="sessionInstitution"></span></span>
+                    <span class="countdown-timer"><i class="fas fa-clock"></i> Expire dans: <span id="countdownDisplay"></span></span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+
+            <header>
+                <div class="header-buttons">
+                    <button class="header-btn" id="closeBtn">
+                        <i class="fas fa-times"></i> Fermer
+                    </button>
+                </div>
+                <div class="header-content">
+                    <div>
+                        <h1><i class="fas fa-graduation-cap"></i> Gestion des Bulletins d'Examen Blanc</h1>
+                        <p class="subtitle">BEPC | BAC1 | BAC2 - Génération automatique des bulletins et classement</p>
                     </div>
-                    
-                    <div class="stat-card">
-                        <h3><i class="fas fa-book"></i> Données des Matières</h3>
-                        <div class="stat-value" id="subjectsCount">0</div>
-                        <p>Nombre total de matières enregistrées</p>
-                        <div class="export-buttons">
-                            <button class="btn btn-warning btn-sm" id="exportAllSubjectsBtn">
-                                <i class="fas fa-file-export"></i> Exporter toutes les matières
-                            </button>
-                            <button class="btn btn-info btn-sm" id="importAllSubjectsBtn">
-                                <i class="fas fa-file-import"></i> Importer des matières
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <h3><i class="fas fa-chart-bar"></i> Données des Notes</h3>
-                        <div class="stat-value" id="gradesCount">0</div>
-                        <p>Nombre total de notes enregistrées</p>
-                        <div class="export-buttons">
-                            <button class="btn btn-warning btn-sm" id="exportAllGradesBtn">
-                                <i class="fas fa-file-export"></i> Exporter toutes les notes
-                            </button>
-                            <button class="btn btn-info btn-sm" id="importAllGradesBtn">
-                                <i class="fas fa-file-import"></i> Importer des notes
-                            </button>
-                        </div>
+                    <div class="logo">
+                        <i class="fas fa-file-contract"></i>
                     </div>
                 </div>
-                
+            </header>
+
+            <div class="exam-selector">
+                <button class="exam-btn active" data-exam="BEPC">BEPC</button>
+                <button class="exam-btn" data-exam="BAC1">BAC Première</button>
+                <button class="exam-btn" data-exam="BAC2">BAC Terminale</button>
+            </div>
+
+            <div class="tabs">
+                <div class="tab active" data-tab="students">Élèves</div>
+                <div class="tab" data-tab="subjects">Matières</div>
+                <div class="tab" data-tab="grades">Notes</div>
+                <div class="tab" data-tab="statistics">Statistiques</div>
+                <div class="tab" data-tab="bulletin">Bulletins</div>
+                <div class="tab" data-tab="data">Gestion des Données</div>
+            </div>
+
+            <div id="alert" class="alert"></div>
+
+            <!-- Onglet 1: Élèves -->
+            <div id="students-tab" class="tab-content active">
                 <div class="form-section">
-                    <h3><i class="fas fa-file-archive"></i> Sauvegarde et Restauration Complète</h3>
-                    <p>Exportez ou importez toutes les données de l'application en un seul fichier</p>
-                    
-                    <div class="btn-group" style="margin-top: 20px;">
-                        <button class="btn btn-success" id="exportAllDataBtn">
-                            <i class="fas fa-download"></i> Exporter toutes les données
-                        </button>
-                        <button class="btn btn-info" id="importAllDataBtn">
-                            <i class="fas fa-upload"></i> Importer toutes les données
-                        </button>
-                        <button class="btn btn-danger" id="resetAllDataBtn">
-                            <i class="fas fa-trash-alt"></i> Réinitialiser toutes les données
-                        </button>
+                    <div class="data-actions">
+                        <h2 class="form-title"><i class="fas fa-user-plus"></i> Ajouter un élève</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-info btn-sm" id="importStudentsBtn">
+                                <i class="fas fa-file-import"></i> Importer JSON
+                            </button>
+                            <button class="btn btn-warning btn-sm" id="exportStudentsBtn">
+                                <i class="fas fa-file-export"></i> Exporter JSON
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="file-input-container" id="allDataFileInput" style="margin-top: 20px;">
-                        <input type="file" id="allDataJsonFile" accept=".json" class="file-input">
+                    <div class="file-input-container" id="studentsFileInput">
+                        <input type="file" id="studentsJsonFile" accept=".json" class="file-input">
                         <div class="import-options">
                             <label class="import-option">
-                                <input type="radio" name="allDataImportMode" value="replace" checked> Remplacer toutes les données
+                                <input type="radio" name="studentsImportMode" value="replace" checked> Remplacer les données
                             </label>
                             <label class="import-option">
-                                <input type="radio" name="allDataImportMode" value="append"> Ajouter aux données existantes
+                                <input type="radio" name="studentsImportMode" value="append"> Ajouter aux données
                             </label>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-success" id="confirmAllDataImport">
-                                <i class="fas fa-check"></i> Confirmer l'import
-                            </button>
-                            <button class="btn btn-danger" id="cancelAllDataImport">
-                                <i class="fas fa-times"></i> Annuler
-                            </button>
+                            <button class="btn btn-success" id="confirmStudentsImport">Confirmer</button>
+                            <button class="btn btn-danger" id="cancelStudentsImport">Annuler</button>
                         </div>
                     </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom</label>
+                            <input type="text" id="lastName" placeholder="Nom de l'élève">
+                        </div>
+                        <div class="form-group">
+                            <label>Prénom</label>
+                            <input type="text" id="firstName" placeholder="Prénom de l'élève">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Matricule/Table</label>
+                            <input type="text" id="matricule" placeholder="Ex: 2023001">
+                        </div>
+                        <div class="form-group">
+                            <label>Examen</label>
+                            <select id="studentExam">
+                                <option value="BEPC">BEPC</option>
+                                <option value="BAC1">BAC Première</option>
+                                <option value="BAC2">BAC Terminale</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="addStudentBtn"><i class="fas fa-plus"></i> Ajouter l'élève</button>
                 </div>
-                
+
                 <div class="form-section">
-                    <h3><i class="fas fa-info-circle"></i> Instructions d'Import/Export</h3>
-                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
-                        <h4><i class="fas fa-file-export"></i> Export :</h4>
-                        <ul>
-                            <li>Cliquez sur "Exporter" pour télécharger un fichier JSON</li>
-                            <li>Le fichier contient les données au format structuré</li>
-                            <li>Vous pouvez modifier le fichier JSON avec un éditeur de texte</li>
-                            <li>Conservez une copie de sauvegarde régulièrement</li>
-                        </ul>
-                        
-                        <h4><i class="fas fa-file-import"></i> Import :</h4>
-                        <ul>
-                            <li>Sélectionnez "Remplacer" pour écraser les données existantes</li>
-                            <li>Sélectionnez "Ajouter" pour fusionner avec les données existantes</li>
-                            <li>Assurez-vous que le fichier JSON a le bon format</li>
-                            <li>Les IDs en double seront automatiquement ajustés</li>
-                        </ul>
-                        
-                        <h4><i class="fas fa-exclamation-triangle"></i> Format JSON attendu :</h4>
-                        <pre style="background-color: #2c3e50; color: white; padding: 10px; border-radius: 5px; overflow-x: auto;">
-{
-  "students": [
-    {"id": 1, "lastName": "Dupont", "firstName": "Jean", "matricule": "2023001", "exam": "BEPC"}
-  ],
-  "subjects": [
-    {"id": 1, "name": "Mathématiques", "coefficient": 4, "exam": "BEPC"}
-  ],
-  "grades": [
-    {"id": 1, "studentId": 1, "subjectId": 1, "value": 15.5, "teacher": "M. Martin"}
-  ]
-}</pre>
+                    <h2 class="form-title"><i class="fas fa-users"></i> Liste des élèves</h2>
+                    <div class="table-container">
+                        <table id="studentsTable">
+                            <thead>
+                                <tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Matricule</th><th>Examen</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="studentsList"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="footer">
-            <p>Application de Gestion des Bulletins d'Examen Blanc &copy; 2025 | Développé pour BEPC, BAC1 et BAC2</p>
+            <!-- Onglet 2: Matières -->
+            <div id="subjects-tab" class="tab-content">
+                <div class="form-section">
+                    <div class="data-actions">
+                        <h2 class="form-title"><i class="fas fa-book"></i> Ajouter une matière</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-info btn-sm" id="importSubjectsBtn">Importer JSON</button>
+                            <button class="btn btn-warning btn-sm" id="exportSubjectsBtn">Exporter JSON</button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-input-container" id="subjectsFileInput">
+                        <input type="file" id="subjectsJsonFile" accept=".json" class="file-input">
+                        <div class="import-options">
+                            <label><input type="radio" name="subjectsImportMode" value="replace" checked> Remplacer</label>
+                            <label><input type="radio" name="subjectsImportMode" value="append"> Ajouter</label>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success" id="confirmSubjectsImport">Confirmer</button>
+                            <button class="btn btn-danger" id="cancelSubjectsImport">Annuler</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom de la matière</label>
+                            <input type="text" id="subjectName" placeholder="Ex: Mathématiques">
+                        </div>
+                        <div class="form-group">
+                            <label>Coefficient</label>
+                            <input type="number" id="coefficient" min="1" max="10" value="1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Examen concerné</label>
+                            <select id="subjectExam">
+                                <option value="BEPC">BEPC</option>
+                                <option value="BAC1">BAC Première</option>
+                                <option value="BAC2">BAC Terminale</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="addSubjectBtn"><i class="fas fa-plus"></i> Ajouter la matière</button>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-list-alt"></i> Liste des matières</h2>
+                    <div class="table-container">
+                        <table id="subjectsTable">
+                            <thead><tr><th>ID</th><th>Matière</th><th>Coefficient</th><th>Examen</th><th>Actions</th></tr></thead>
+                            <tbody id="subjectsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet 3: Notes -->
+            <div id="grades-tab" class="tab-content">
+                <div class="form-section">
+                    <div class="data-actions">
+                        <h2 class="form-title"><i class="fas fa-edit"></i> Enregistrer des notes</h2>
+                        <div class="btn-group">
+                            <button class="btn btn-info btn-sm" id="importGradesBtn">Importer JSON</button>
+                            <button class="btn btn-warning btn-sm" id="exportGradesBtn">Exporter JSON</button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-input-container" id="gradesFileInput">
+                        <input type="file" id="gradesJsonFile" accept=".json" class="file-input">
+                        <div class="import-options">
+                            <label><input type="radio" name="gradesImportMode" value="replace" checked> Remplacer</label>
+                            <label><input type="radio" name="gradesImportMode" value="append"> Ajouter</label>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success" id="confirmGradesImport">Confirmer</button>
+                            <button class="btn btn-danger" id="cancelGradesImport">Annuler</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Élève</label>
+                            <select id="gradeStudent"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Matière</label>
+                            <select id="gradeSubject"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Note (sur 20)</label>
+                            <input type="number" id="gradeValue" min="0" max="20" step="0.5">
+                        </div>
+                        <div class="form-group">
+                            <label>Enseignant</label>
+                            <input type="text" id="gradeTeacher" placeholder="Nom de l'enseignant">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" id="addGradeBtn"><i class="fas fa-save"></i> Enregistrer la note</button>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-chart-bar"></i> Notes enregistrées</h2>
+                    <div class="table-container">
+                        <table id="gradesTable">
+                            <thead><tr><th>Élève</th><th>Matière</th><th>Note</th><th>Coefficient</th><th>Enseignant</th><th>Actions</th></tr></thead>
+                            <tbody id="gradesList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet 4: Statistiques -->
+            <div id="statistics-tab" class="tab-content">
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-chart-pie"></i> Statistiques Générales</h2>
+                    <div class="stats-grid" id="generalStats"></div>
+                </div>
+
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-chart-line"></i> Statistiques par Matière</h2>
+                    <div class="subject-selector">
+                        <label>Sélectionner une matière:</label>
+                        <select id="subjectStatsSelect" style="width:100%; padding:12px;">
+                            <option value="">-- Choisir une matière --</option>
+                        </select>
+                    </div>
+                    <div id="subjectStatistics" style="display:none;">
+                        <div class="subject-stats">
+                            <h3 id="selectedSubjectName"></h3>
+                            <div class="stats-grid" id="subjectStatsCards"></div>
+                            <div class="impact-analysis">
+                                <h4><i class="fas fa-calculator"></i> Analyse d'Impact</h4>
+                                <p id="impactAnalysisText"></p>
+                                <div id="studentsAffectedList"></div>
+                            </div>
+                            <h4>Distribution des Notes</h4>
+                            <div class="chart-container">
+                                <canvas id="gradesDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onglet 5: Bulletins -->
+            <div id="bulletin-tab" class="tab-content">
+                <div class="generate-section">
+                    <button class="generate-btn" id="generateBulletinsBtn">
+                        <i class="fas fa-file-pdf"></i> Générer tous les bulletins
+                    </button>
+                </div>
+                <div id="bulletinResults"></div>
+            </div>
+
+            <!-- Onglet 6: Gestion des données -->
+            <div id="data-tab" class="tab-content">
+                <div class="form-section">
+                    <h2 class="form-title"><i class="fas fa-database"></i> Gestion Complète</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Élèves</h3>
+                            <div class="stat-value" id="studentsCount">0</div>
+                            <button class="btn btn-warning btn-sm" id="exportAllStudentsBtn">Exporter</button>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Matières</h3>
+                            <div class="stat-value" id="subjectsCount">0</div>
+                            <button class="btn btn-warning btn-sm" id="exportAllSubjectsBtn">Exporter</button>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Notes</h3>
+                            <div class="stat-value" id="gradesCount">0</div>
+                            <button class="btn btn-warning btn-sm" id="exportAllGradesBtn">Exporter</button>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group" style="margin-top:20px">
+                        <button class="btn btn-success" id="exportAllDataBtn"><i class="fas fa-download"></i> Sauvegarde complète</button>
+                        <button class="btn btn-danger" id="resetAllDataBtn"><i class="fas fa-trash-alt"></i> Réinitialiser</button>
+                    </div>
+                    
+                    <div class="file-input-container" id="allDataFileInput" style="margin-top:20px">
+                        <input type="file" id="allDataJsonFile" accept=".json" class="file-input">
+                        <div class="import-options">
+                            <label><input type="radio" name="allDataImportMode" value="replace" checked> Remplacer</label>
+                            <label><input type="radio" name="allDataImportMode" value="append"> Ajouter</label>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success" id="confirmAllDataImport">Confirmer</button>
+                            <button class="btn btn-danger" id="cancelAllDataImport">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Application de Gestion des Bulletins d'Examen Blanc &copy; 2025</p>
+            </div>
         </div>
     </div>
 
     <script>
-        // Données de l'application
+        // === GESTION DE L'AUTHENTIFICATION ===
+        
+        // Stockage des identifiants temporaires
+        let activeSession = null;
+        let countdownInterval = null;
+        
+        // Fonction pour générer des identifiants aléatoires (pour démo/administration)
+        // En production, ces identifiants seraient générés par le serveur
+        const VALID_CREDENTIALS = {
+            'ADMIN_001': { password: 'BULLETIN2025', institution: 'Administration Centrale' },
+            'CEG_001': { password: 'MASSEDENA2025', institution: 'CEG Massedena' },
+            'LYCEE_001': { password: 'TOKIN2025', institution: 'Lycée de Tokin' }
+        };
+        
+        // Vérifier si une session est sauvegardée et valide
+        function checkExistingSession() {
+            const savedSession = localStorage.getItem('examAppActiveSession');
+            if (savedSession) {
+                try {
+                    const session = JSON.parse(savedSession);
+                    if (Date.now() < session.expirationTime) {
+                        // Session encore valide
+                        activeSession = session;
+                        startCountdown();
+                        showMainApp();
+                        return true;
+                    } else {
+                        // Session expirée
+                        localStorage.removeItem('examAppActiveSession');
+                    }
+                } catch(e) {}
+            }
+            return false;
+        }
+        
+        // Fonction de connexion
+        function login(username, password) {
+            // Vérifier si les identifiants sont valides
+            if (VALID_CREDENTIALS[username] && VALID_CREDENTIALS[username].password === password) {
+                // Créer la session (valable 6 heures)
+                const expirationTime = Date.now() + (6 * 60 * 60 * 1000);
+                activeSession = {
+                    username: username,
+                    institution: VALID_CREDENTIALS[username].institution,
+                    loginTime: new Date().toISOString(),
+                    expirationTime: expirationTime
+                };
+                
+                // Sauvegarder la session
+                localStorage.setItem('examAppActiveSession', JSON.stringify(activeSession));
+                
+                // Démarrer le compte à rebours
+                startCountdown();
+                
+                // Afficher l'application
+                showMainApp();
+                
+                // Charger les données
+                loadFromLocalStorage();
+                updateUI();
+                
+                return true;
+            }
+            return false;
+        }
+        
+        // Fonction de déconnexion
+        function logout() {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ? La session sera fermée.')) {
+                // Nettoyer la session
+                localStorage.removeItem('examAppActiveSession');
+                activeSession = null;
+                
+                // Arrêter le compte à rebours
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+                
+                // Réinitialiser l'interface
+                resetAppData();
+                
+                // Revenir à l'écran de connexion
+                document.getElementById('authOverlay').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('authUsername').value = '';
+                document.getElementById('authPassword').value = '';
+                
+                showAuthAlert('Déconnecté avec succès', 'success');
+            }
+        }
+        
+        // Démarrer le compte à rebours
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(() => {
+                if (!activeSession) return;
+                
+                const remaining = activeSession.expirationTime - Date.now();
+                
+                if (remaining <= 0) {
+                    // Session expirée
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    
+                    showAuthAlert('Votre session a expiré. Veuillez vous reconnecter.', 'warning');
+                    setTimeout(() => {
+                        logout();
+                    }, 2000);
+                    return;
+                }
+                
+                // Calculer le temps restant
+                const hours = Math.floor(remaining / (60 * 60 * 1000));
+                const minutes = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+                const seconds = Math.floor((remaining % (60 * 1000)) / 1000);
+                
+                const display = document.getElementById('countdownDisplay');
+                if (display) {
+                    display.textContent = `${hours}h ${minutes}m ${seconds}s`;
+                }
+            }, 1000);
+        }
+        
+        // Afficher l'application principale
+        function showMainApp() {
+            document.getElementById('authOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            if (activeSession) {
+                document.getElementById('sessionUser').textContent = activeSession.username;
+                document.getElementById('sessionInstitution').textContent = activeSession.institution;
+            }
+        }
+        
+        // Afficher les alertes sur la page d'authentification
+        function showAuthAlert(message, type) {
+            const alertDiv = document.getElementById('authAlert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Afficher les alertes dans l'application
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // === DONNÉES DE L'APPLICATION ===
+        
         let appData = {
             currentExam: 'BEPC',
             students: [],
@@ -1174,1019 +1184,68 @@
             nextSubjectId: 1,
             nextGradeId: 1
         };
-
-        // Variables pour les graphiques
+        
         let gradesChart = null;
-
-        // Initialisation de l'application
-        document.addEventListener('DOMContentLoaded', function() {
-            // Charger les données depuis le localStorage si disponibles
-            loadFromLocalStorage();
-            
-            // Mettre à jour les listes déroulantes
-            updateStudentSelect();
-            updateSubjectSelect();
-            updateSubjectStatsSelect();
-            
-            // Afficher les données existantes
+        
+        // Charger les données
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('examBulletinAppData_' + (activeSession?.username || 'default'));
+            if (savedData) {
+                appData = JSON.parse(savedData);
+            }
+        }
+        
+        // Sauvegarder les données
+        function saveToLocalStorage() {
+            localStorage.setItem('examBulletinAppData_' + (activeSession?.username || 'default'), JSON.stringify(appData));
+        }
+        
+        // Réinitialiser les données
+        function resetAppData() {
+            appData = {
+                currentExam: 'BEPC',
+                students: [],
+                subjects: [],
+                grades: [],
+                nextStudentId: 1,
+                nextSubjectId: 1,
+                nextGradeId: 1
+            };
+            saveToLocalStorage();
+        }
+        
+        // Mettre à jour l'interface
+        function updateUI() {
             renderStudents();
             renderSubjects();
             renderGrades();
-            
-            // Mettre à jour les compteurs
-            updateDataCounters();
-            
-            // Gestion des événements
-            setupEventListeners();
-            
-            // Générer les statistiques initiales
+            updateStudentSelect();
+            updateSubjectSelect();
+            updateSubjectStatsSelect();
             updateGeneralStatistics();
-            
-            // Ajouter les événements pour les nouveaux boutons
-            document.getElementById('returnBtn').addEventListener('click', function() {
-                window.location.href = 'https://jeanskodoc.github.io/BEB/';
-            });
-            
-            document.getElementById('closeBtn').addEventListener('click', function() {
-                if (confirm('Êtes-vous sûr de vouloir quitter cette page ?')) {
-                    // Fermer la fenêtre/tab
-                    window.close();
-                    
-                    // Fallback si window.close() ne fonctionne pas
-                    setTimeout(function() {
-                        window.location.href = 'about:blank';
-                    }, 100);
-                }
-            });
-        });
-
-        // Configuration des écouteurs d'événements
-        function setupEventListeners() {
-            // Boutons de sélection d'examen
-            document.querySelectorAll('.exam-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.exam-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    appData.currentExam = this.dataset.exam;
-                    showAlert(`Examen sélectionné: ${appData.currentExam}`, 'success');
-                    
-                    // Mettre à jour les affichages
-                    renderStudents();
-                    renderSubjects();
-                    renderGrades();
-                    updateGeneralStatistics();
-                    updateSubjectStatsSelect();
-                    updateDataCounters();
-                });
-            });
-
-            // Onglets
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.dataset.tab;
-                    
-                    // Activer l'onglet cliqué
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Afficher le contenu correspondant
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
-                    
-                    // Si on clique sur l'onglet statistiques, mettre à jour les stats
-                    if (tabId === 'statistics') {
-                        updateGeneralStatistics();
-                        updateSubjectStatsSelect();
-                    }
-                    
-                    // Si on clique sur l'onglet données, mettre à jour les compteurs
-                    if (tabId === 'data') {
-                        updateDataCounters();
-                    }
-                });
-            });
-
-            // Ajout d'un élève
-            document.getElementById('addStudentBtn').addEventListener('click', addStudent);
-
-            // Ajout d'une matière
-            document.getElementById('addSubjectBtn').addEventListener('click', addSubject);
-
-            // Ajout d'une note
-            document.getElementById('addGradeBtn').addEventListener('click', addGrade);
-
-            // Génération des bulletins
-            document.getElementById('generateBulletinsBtn').addEventListener('click', generateBulletins);
-
-            // Sélection de matière pour les statistiques
-            document.getElementById('subjectStatsSelect').addEventListener('change', function() {
-                const subjectId = parseInt(this.value);
-                if (subjectId) {
-                    updateSubjectStatistics(subjectId);
-                }
-            });
-
-            // === IMPORT/EXPORT ÉLÈVES ===
-            document.getElementById('importStudentsBtn').addEventListener('click', function() {
-                document.getElementById('studentsFileInput').classList.add('active');
-            });
-
-            document.getElementById('exportStudentsBtn').addEventListener('click', exportStudents);
-
-            document.getElementById('confirmStudentsImport').addEventListener('click', importStudents);
-            document.getElementById('cancelStudentsImport').addEventListener('click', function() {
-                document.getElementById('studentsFileInput').classList.remove('active');
-                document.getElementById('studentsJsonFile').value = '';
-            });
-
-            // === IMPORT/EXPORT MATIÈRES ===
-            document.getElementById('importSubjectsBtn').addEventListener('click', function() {
-                document.getElementById('subjectsFileInput').classList.add('active');
-            });
-
-            document.getElementById('exportSubjectsBtn').addEventListener('click', exportSubjects);
-
-            document.getElementById('confirmSubjectsImport').addEventListener('click', importSubjects);
-            document.getElementById('cancelSubjectsImport').addEventListener('click', function() {
-                document.getElementById('subjectsFileInput').classList.remove('active');
-                document.getElementById('subjectsJsonFile').value = '';
-            });
-
-            // === IMPORT/EXPORT NOTES ===
-            document.getElementById('importGradesBtn').addEventListener('click', function() {
-                document.getElementById('gradesFileInput').classList.add('active');
-            });
-
-            document.getElementById('exportGradesBtn').addEventListener('click', exportGrades);
-
-            document.getElementById('confirmGradesImport').addEventListener('click', importGrades);
-            document.getElementById('cancelGradesImport').addEventListener('click', function() {
-                document.getElementById('gradesFileInput').classList.remove('active');
-                document.getElementById('gradesJsonFile').value = '';
-            });
-
-            // === GESTION COMPLÈTE DES DONNÉES ===
-            document.getElementById('exportAllStudentsBtn').addEventListener('click', exportStudents);
-            document.getElementById('exportAllSubjectsBtn').addEventListener('click', exportSubjects);
-            document.getElementById('exportAllGradesBtn').addEventListener('click', exportGrades);
-
-            document.getElementById('importAllStudentsBtn').addEventListener('click', function() {
-                document.getElementById('subjectsFileInput').classList.remove('active');
-                document.getElementById('gradesFileInput').classList.remove('active');
-                document.getElementById('studentsFileInput').classList.add('active');
-            });
-
-            document.getElementById('importAllSubjectsBtn').addEventListener('click', function() {
-                document.getElementById('studentsFileInput').classList.remove('active');
-                document.getElementById('gradesFileInput').classList.remove('active');
-                document.getElementById('subjectsFileInput').classList.add('active');
-            });
-
-            document.getElementById('importAllGradesBtn').addEventListener('click', function() {
-                document.getElementById('studentsFileInput').classList.remove('active');
-                document.getElementById('subjectsFileInput').classList.remove('active');
-                document.getElementById('gradesFileInput').classList.add('active');
-            });
-
-            // Export de toutes les données
-            document.getElementById('exportAllDataBtn').addEventListener('click', exportAllData);
-
-            // Import de toutes les données
-            document.getElementById('importAllDataBtn').addEventListener('click', function() {
-                document.getElementById('allDataFileInput').classList.add('active');
-            });
-
-            document.getElementById('confirmAllDataImport').addEventListener('click', importAllData);
-            document.getElementById('cancelAllDataImport').addEventListener('click', function() {
-                document.getElementById('allDataFileInput').classList.remove('active');
-                document.getElementById('allDataJsonFile').value = '';
-            });
-
-            // Réinitialisation de toutes les données
-            document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+            updateDataCounters();
         }
-
-        // Fonction pour mettre à jour les compteurs de données
+        
+        // Mettre à jour les compteurs
         function updateDataCounters() {
             document.getElementById('studentsCount').textContent = appData.students.length;
             document.getElementById('subjectsCount').textContent = appData.subjects.length;
             document.getElementById('gradesCount').textContent = appData.grades.length;
         }
-
-        // Fonction pour exporter les données des élèves
-        function exportStudents() {
-            const studentsData = appData.students;
-            
-            // Filtrer par examen si on est dans l'onglet élèves
-            const currentTab = document.querySelector('.tab.active').dataset.tab;
-            let filteredStudents = studentsData;
-            
-            if (currentTab === 'students') {
-                filteredStudents = studentsData.filter(student => student.exam === appData.currentExam);
-            }
-            
-            const dataStr = JSON.stringify(filteredStudents, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `eleves_examen_${appData.currentExam}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            showAlert(`Export des élèves (${filteredStudents.length}) réalisé avec succès`, 'success');
-        }
-
-        // Fonction pour importer les données des élèves
-        function importStudents() {
-            const fileInput = document.getElementById('studentsJsonFile');
-            const importMode = document.querySelector('input[name="studentsImportMode"]:checked').value;
-            
-            if (!fileInput.files.length) {
-                showAlert('Veuillez sélectionner un fichier JSON', 'error');
-                return;
-            }
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Validation des données
-                    if (!Array.isArray(importedData)) {
-                        throw new Error('Le fichier doit contenir un tableau JSON');
-                    }
-                    
-                    // Valider chaque élève
-                    const validStudents = importedData.filter(student => 
-                        student.lastName && student.firstName && student.matricule && student.exam
-                    );
-                    
-                    if (validStudents.length === 0) {
-                        throw new Error('Aucun élève valide trouvé dans le fichier');
-                    }
-                    
-                    let importedCount = 0;
-                    let updatedCount = 0;
-                    
-                    if (importMode === 'replace') {
-                        // Remplacer toutes les données
-                        appData.students = [];
-                        appData.nextStudentId = 1;
-                        
-                        validStudents.forEach(student => {
-                            student.id = appData.nextStudentId++;
-                            appData.students.push(student);
-                            importedCount++;
-                        });
-                    } else {
-                        // Ajouter aux données existantes
-                        validStudents.forEach(importedStudent => {
-                            // Vérifier si l'élève existe déjà (par matricule)
-                            const existingIndex = appData.students.findIndex(s => 
-                                s.matricule === importedStudent.matricule && s.exam === importedStudent.exam
-                            );
-                            
-                            if (existingIndex !== -1) {
-                                // Mettre à jour l'élève existant
-                                importedStudent.id = appData.students[existingIndex].id;
-                                appData.students[existingIndex] = importedStudent;
-                                updatedCount++;
-                            } else {
-                                // Ajouter un nouvel élève
-                                importedStudent.id = appData.nextStudentId++;
-                                appData.students.push(importedStudent);
-                                importedCount++;
-                            }
-                        });
-                        
-                        // Mettre à jour nextStudentId
-                        const maxId = Math.max(...appData.students.map(s => s.id));
-                        appData.nextStudentId = maxId + 1;
-                    }
-                    
-                    // Sauvegarder
-                    saveToLocalStorage();
-                    
-                    // Mettre à jour l'affichage
-                    renderStudents();
-                    updateStudentSelect();
-                    updateSubjectStatsSelect();
-                    updateDataCounters();
-                    
-                    // Fermer l'interface d'import
-                    document.getElementById('studentsFileInput').classList.remove('active');
-                    document.getElementById('studentsJsonFile').value = '';
-                    
-                    showAlert(
-                        `Import des élèves réussi : ${importedCount} importés, ${updatedCount} mis à jour`,
-                        'success'
-                    );
-                    
-                } catch (error) {
-                    showAlert(`Erreur lors de l'import : ${error.message}`, 'error');
-                }
-            };
-            
-            reader.onerror = function() {
-                showAlert('Erreur lors de la lecture du fichier', 'error');
-            };
-            
-            reader.readAsText(file);
-        }
-
-        // Fonction pour exporter les données des matières
-        function exportSubjects() {
-            const subjectsData = appData.subjects;
-            
-            // Filtrer par examen si on est dans l'onglet matières
-            const currentTab = document.querySelector('.tab.active').dataset.tab;
-            let filteredSubjects = subjectsData;
-            
-            if (currentTab === 'subjects') {
-                filteredSubjects = subjectsData.filter(subject => subject.exam === appData.currentExam);
-            }
-            
-            const dataStr = JSON.stringify(filteredSubjects, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `matieres_examen_${appData.currentExam}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            showAlert(`Export des matières (${filteredSubjects.length}) réalisé avec succès`, 'success');
-        }
-
-        // Fonction pour importer les données des matières
-        function importSubjects() {
-            const fileInput = document.getElementById('subjectsJsonFile');
-            const importMode = document.querySelector('input[name="subjectsImportMode"]:checked').value;
-            
-            if (!fileInput.files.length) {
-                showAlert('Veuillez sélectionner un fichier JSON', 'error');
-                return;
-            }
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Validation des données
-                    if (!Array.isArray(importedData)) {
-                        throw new Error('Le fichier doit contenir un tableau JSON');
-                    }
-                    
-                    // Valider chaque matière
-                    const validSubjects = importedData.filter(subject => 
-                        subject.name && subject.coefficient && subject.exam
-                    );
-                    
-                    if (validSubjects.length === 0) {
-                        throw new Error('Aucune matière valide trouvée dans le fichier');
-                    }
-                    
-                    let importedCount = 0;
-                    let updatedCount = 0;
-                    
-                    if (importMode === 'replace') {
-                        // Remplacer toutes les données
-                        appData.subjects = [];
-                        appData.nextSubjectId = 1;
-                        
-                        // Supprimer aussi les notes associées
-                        appData.grades = [];
-                        appData.nextGradeId = 1;
-                        
-                        validSubjects.forEach(subject => {
-                            subject.id = appData.nextSubjectId++;
-                            appData.subjects.push(subject);
-                            importedCount++;
-                        });
-                    } else {
-                        // Ajouter aux données existantes
-                        validSubjects.forEach(importedSubject => {
-                            // Vérifier si la matière existe déjà (par nom et examen)
-                            const existingIndex = appData.subjects.findIndex(s => 
-                                s.name === importedSubject.name && s.exam === importedSubject.exam
-                            );
-                            
-                            if (existingIndex !== -1) {
-                                // Mettre à jour la matière existante
-                                importedSubject.id = appData.subjects[existingIndex].id;
-                                appData.subjects[existingIndex] = importedSubject;
-                                updatedCount++;
-                            } else {
-                                // Ajouter une nouvelle matière
-                                importedSubject.id = appData.nextSubjectId++;
-                                appData.subjects.push(importedSubject);
-                                importedCount++;
-                            }
-                        });
-                        
-                        // Mettre à jour nextSubjectId
-                        const maxId = Math.max(...appData.subjects.map(s => s.id));
-                        appData.nextSubjectId = maxId + 1;
-                    }
-                    
-                    // Sauvegarder
-                    saveToLocalStorage();
-                    
-                    // Mettre à jour l'affichage
-                    renderSubjects();
-                    updateSubjectSelect();
-                    updateSubjectStatsSelect();
-                    renderGrades();
-                    updateDataCounters();
-                    
-                    // Fermer l'interface d'import
-                    document.getElementById('subjectsFileInput').classList.remove('active');
-                    document.getElementById('subjectsJsonFile').value = '';
-                    
-                    showAlert(
-                        `Import des matières réussi : ${importedCount} importées, ${updatedCount} mises à jour`,
-                        'success'
-                    );
-                    
-                } catch (error) {
-                    showAlert(`Erreur lors de l'import : ${error.message}`, 'error');
-                }
-            };
-            
-            reader.onerror = function() {
-                showAlert('Erreur lors de la lecture du fichier', 'error');
-            };
-            
-            reader.readAsText(file);
-        }
-
-        // Fonction pour exporter les données des notes
-        function exportGrades() {
-            const gradesData = appData.grades;
-            
-            // Filtrer par examen si on est dans l'onglet notes
-            const currentTab = document.querySelector('.tab.active').dataset.tab;
-            let filteredGrades = gradesData;
-            
-            if (currentTab === 'grades') {
-                filteredGrades = gradesData.filter(grade => {
-                    const student = appData.students.find(s => s.id === grade.studentId);
-                    return student && student.exam === appData.currentExam;
-                });
-            }
-            
-            // Ajouter les informations des élèves et matières pour un export complet
-            const enrichedGrades = filteredGrades.map(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
-                const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                
-                return {
-                    ...grade,
-                    studentName: student ? `${student.firstName} ${student.lastName}` : 'Inconnu',
-                    studentMatricule: student ? student.matricule : 'Inconnu',
-                    subjectName: subject ? subject.name : 'Inconnu',
-                    coefficient: subject ? subject.coefficient : 1
-                };
-            });
-            
-            const dataStr = JSON.stringify(enrichedGrades, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `notes_examen_${appData.currentExam}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            showAlert(`Export des notes (${filteredGrades.length}) réalisé avec succès`, 'success');
-        }
-
-        // Fonction pour importer les données des notes
-        function importGrades() {
-            const fileInput = document.getElementById('gradesJsonFile');
-            const importMode = document.querySelector('input[name="gradesImportMode"]:checked').value;
-            
-            if (!fileInput.files.length) {
-                showAlert('Veuillez sélectionner un fichier JSON', 'error');
-                return;
-            }
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Validation des données
-                    if (!Array.isArray(importedData)) {
-                        throw new Error('Le fichier doit contenir un tableau JSON');
-                    }
-                    
-                    // Valider chaque note
-                    const validGrades = importedData.filter(grade => 
-                        grade.studentId && grade.subjectId && grade.value !== undefined && grade.teacher
-                    );
-                    
-                    if (validGrades.length === 0) {
-                        throw new Error('Aucune note valide trouvée dans le fichier');
-                    }
-                    
-                    let importedCount = 0;
-                    let updatedCount = 0;
-                    
-                    if (importMode === 'replace') {
-                        // Remplacer toutes les données
-                        appData.grades = [];
-                        appData.nextGradeId = 1;
-                        
-                        validGrades.forEach(grade => {
-                            grade.id = appData.nextGradeId++;
-                            appData.grades.push(grade);
-                            importedCount++;
-                        });
-                    } else {
-                        // Ajouter aux données existantes
-                        validGrades.forEach(importedGrade => {
-                            // Vérifier si la note existe déjà (par élève et matière)
-                            const existingIndex = appData.grades.findIndex(g => 
-                                g.studentId === importedGrade.studentId && 
-                                g.subjectId === importedGrade.subjectId
-                            );
-                            
-                            if (existingIndex !== -1) {
-                                // Mettre à jour la note existante
-                                importedGrade.id = appData.grades[existingIndex].id;
-                                appData.grades[existingIndex] = importedGrade;
-                                updatedCount++;
-                            } else {
-                                // Ajouter une nouvelle note
-                                importedGrade.id = appData.nextGradeId++;
-                                appData.grades.push(importedGrade);
-                                importedCount++;
-                            }
-                        });
-                        
-                        // Mettre à jour nextGradeId
-                        const maxId = Math.max(...appData.grades.map(g => g.id));
-                        appData.nextGradeId = maxId + 1;
-                    }
-                    
-                    // Sauvegarder
-                    saveToLocalStorage();
-                    
-                    // Mettre à jour l'affichage
-                    renderGrades();
-                    updateGeneralStatistics();
-                    updateSubjectStatsSelect();
-                    updateDataCounters();
-                    
-                    // Fermer l'interface d'import
-                    document.getElementById('gradesFileInput').classList.remove('active');
-                    document.getElementById('gradesJsonFile').value = '';
-                    
-                    showAlert(
-                        `Import des notes réussi : ${importedCount} importées, ${updatedCount} mises à jour`,
-                        'success'
-                    );
-                    
-                } catch (error) {
-                    showAlert(`Erreur lors de l'import : ${error.message}`, 'error');
-                }
-            };
-            
-            reader.onerror = function() {
-                showAlert('Erreur lors de la lecture du fichier', 'error');
-            };
-            
-            reader.readAsText(file);
-        }
-
-        // Fonction pour exporter toutes les données
-        function exportAllData() {
-            const exportData = {
-                metadata: {
-                    exportDate: new Date().toISOString(),
-                    exam: appData.currentExam,
-                    version: "1.0"
-                },
-                students: appData.students,
-                subjects: appData.subjects,
-                grades: appData.grades,
-                counters: {
-                    nextStudentId: appData.nextStudentId,
-                    nextSubjectId: appData.nextSubjectId,
-                    nextGradeId: appData.nextGradeId
-                }
-            };
-            
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `sauvegarde_complete_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            showAlert(`Sauvegarde complète exportée avec succès`, 'success');
-        }
-
-        // Fonction pour importer toutes les données
-        function importAllData() {
-            const fileInput = document.getElementById('allDataJsonFile');
-            const importMode = document.querySelector('input[name="allDataImportMode"]:checked').value;
-            
-            if (!fileInput.files.length) {
-                showAlert('Veuillez sélectionner un fichier JSON', 'error');
-                return;
-            }
-            
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    // Validation des données
-                    if (!importedData.students || !importedData.subjects || !importedData.grades) {
-                        throw new Error('Format de fichier invalide. Le fichier doit contenir students, subjects et grades');
-                    }
-                    
-                    if (importMode === 'replace') {
-                        // Remplacer toutes les données
-                        appData.students = importedData.students;
-                        appData.subjects = importedData.subjects;
-                        appData.grades = importedData.grades;
-                        
-                        // Restaurer les compteurs si disponibles
-                        if (importedData.counters) {
-                            appData.nextStudentId = importedData.counters.nextStudentId || 
-                                Math.max(...appData.students.map(s => s.id)) + 1;
-                            appData.nextSubjectId = importedData.counters.nextSubjectId || 
-                                Math.max(...appData.subjects.map(s => s.id)) + 1;
-                            appData.nextGradeId = importedData.counters.nextGradeId || 
-                                Math.max(...appData.grades.map(g => g.id)) + 1;
-                        } else {
-                            // Calculer les prochains IDs
-                            appData.nextStudentId = appData.students.length > 0 ? 
-                                Math.max(...appData.students.map(s => s.id)) + 1 : 1;
-                            appData.nextSubjectId = appData.subjects.length > 0 ? 
-                                Math.max(...appData.subjects.map(s => s.id)) + 1 : 1;
-                            appData.nextGradeId = appData.grades.length > 0 ? 
-                                Math.max(...appData.grades.map(g => g.id)) + 1 : 1;
-                        }
-                    } else {
-                        // Fusionner avec les données existantes
-                        // Fusionner les élèves
-                        importedData.students.forEach(importedStudent => {
-                            const existingIndex = appData.students.findIndex(s => 
-                                s.matricule === importedStudent.matricule && s.exam === importedStudent.exam
-                            );
-                            
-                            if (existingIndex === -1) {
-                                importedStudent.id = appData.nextStudentId++;
-                                appData.students.push(importedStudent);
-                            }
-                        });
-                        
-                        // Fusionner les matières
-                        importedData.subjects.forEach(importedSubject => {
-                            const existingIndex = appData.subjects.findIndex(s => 
-                                s.name === importedSubject.name && s.exam === importedSubject.exam
-                            );
-                            
-                            if (existingIndex === -1) {
-                                importedSubject.id = appData.nextSubjectId++;
-                                appData.subjects.push(importedSubject);
-                            }
-                        });
-                        
-                        // Fusionner les notes
-                        importedData.grades.forEach(importedGrade => {
-                            const existingIndex = appData.grades.findIndex(g => 
-                                g.studentId === importedGrade.studentId && 
-                                g.subjectId === importedGrade.subjectId
-                            );
-                            
-                            if (existingIndex === -1) {
-                                importedGrade.id = appData.nextGradeId++;
-                                appData.grades.push(importedGrade);
-                            }
-                        });
-                    }
-                    
-                    // Sauvegarder
-                    saveToLocalStorage();
-                    
-                    // Mettre à jour tous les affichages
-                    renderStudents();
-                    renderSubjects();
-                    renderGrades();
-                    updateStudentSelect();
-                    updateSubjectSelect();
-                    updateSubjectStatsSelect();
-                    updateGeneralStatistics();
-                    updateDataCounters();
-                    
-                    // Fermer l'interface d'import
-                    document.getElementById('allDataFileInput').classList.remove('active');
-                    document.getElementById('allDataJsonFile').value = '';
-                    
-                    showAlert(
-                        `Import complet réussi : ${appData.students.length} élèves, ${appData.subjects.length} matières, ${appData.grades.length} notes`,
-                        'success'
-                    );
-                    
-                } catch (error) {
-                    showAlert(`Erreur lors de l'import : ${error.message}`, 'error');
-                }
-            };
-            
-            reader.onerror = function() {
-                showAlert('Erreur lors de la lecture du fichier', 'error');
-            };
-            
-            reader.readAsText(file);
-        }
-
-        // Fonction pour réinitialiser toutes les données
-        function resetAllData() {
-            if (confirm('⚠️ ATTENTION : Cette action va supprimer TOUTES les données (élèves, matières, notes).\n\nÊtes-vous sûr de vouloir continuer ?')) {
-                appData = {
-                    currentExam: 'BEPC',
-                    students: [],
-                    subjects: [],
-                    grades: [],
-                    nextStudentId: 1,
-                    nextSubjectId: 1,
-                    nextGradeId: 1
-                };
-                
-                // Sauvegarder
-                saveToLocalStorage();
-                
-                // Mettre à jour tous les affichages
-                renderStudents();
-                renderSubjects();
-                renderGrades();
-                updateStudentSelect();
-                updateSubjectSelect();
-                updateSubjectStatsSelect();
-                updateGeneralStatistics();
-                updateDataCounters();
-                
-                // Réinitialiser le localStorage
-                localStorage.removeItem('examBulletinAppData');
-                
-                showAlert('Toutes les données ont été réinitialisées', 'info');
-            }
-        }
-
-        // Fonction pour ajouter un élève
-        function addStudent() {
-            const lastName = document.getElementById('lastName').value.trim();
-            const firstName = document.getElementById('firstName').value.trim();
-            const matricule = document.getElementById('matricule').value.trim();
-            const exam = document.getElementById('studentExam').value;
-
-            // Validation
-            if (!lastName || !firstName || !matricule) {
-                showAlert('Veuillez remplir tous les champs pour l\'élève', 'error');
-                return;
-            }
-
-            // Créer un nouvel élève
-            const student = {
-                id: appData.nextStudentId++,
-                lastName: lastName,
-                firstName: firstName,
-                matricule: matricule,
-                exam: exam
-            };
-
-            // Ajouter à la liste
-            appData.students.push(student);
-            
-            // Sauvegarder
-            saveToLocalStorage();
-            
-            // Mettre à jour l'affichage
-            renderStudents();
-            updateStudentSelect();
-            updateSubjectStatsSelect();
-            updateDataCounters();
-            
-            // Réinitialiser le formulaire
-            document.getElementById('lastName').value = '';
-            document.getElementById('firstName').value = '';
-            document.getElementById('matricule').value = '';
-            
-            showAlert(`Élève ${firstName} ${lastName} ajouté avec succès`, 'success');
-        }
-
-        // Fonction pour ajouter une matière
-        function addSubject() {
-            const name = document.getElementById('subjectName').value.trim();
-            const coefficient = parseInt(document.getElementById('coefficient').value);
-            const exam = document.getElementById('subjectExam').value;
-
-            // Validation
-            if (!name || coefficient < 1) {
-                showAlert('Veuillez entrer un nom valide et un coefficient positif', 'error');
-                return;
-            }
-
-            // Créer une nouvelle matière
-            const subject = {
-                id: appData.nextSubjectId++,
-                name: name,
-                coefficient: coefficient,
-                exam: exam
-            };
-
-            // Ajouter à la liste
-            appData.subjects.push(subject);
-            
-            // Sauvegarder
-            saveToLocalStorage();
-            
-            // Mettre à jour l'affichage
-            renderSubjects();
-            updateSubjectSelect();
-            updateSubjectStatsSelect();
-            updateDataCounters();
-            
-            // Réinitialiser le formulaire
-            document.getElementById('subjectName').value = '';
-            document.getElementById('coefficient').value = '1';
-            
-            showAlert(`Matière "${name}" ajoutée avec succès`, 'success');
-        }
-
-        // Fonction pour ajouter une note
-        function addGrade() {
-            const studentId = parseInt(document.getElementById('gradeStudent').value);
-            const subjectId = parseInt(document.getElementById('gradeSubject').value);
-            const gradeValue = parseFloat(document.getElementById('gradeValue').value);
-            const teacher = document.getElementById('gradeTeacher').value.trim();
-
-            // Validation
-            if (!studentId || !subjectId || isNaN(gradeValue) || gradeValue < 0 || gradeValue > 20 || !teacher) {
-                showAlert('Veuillez remplir tous les champs avec des valeurs valides', 'error');
-                return;
-            }
-
-            // Trouver l'élève et la matière
-            const student = appData.students.find(s => s.id === studentId);
-            const subject = appData.subjects.find(s => s.id === subjectId);
-
-            if (!student || !subject) {
-                showAlert('Élève ou matière non trouvé(e)', 'error');
-                return;
-            }
-
-            // Vérifier si une note existe déjà pour cet élève dans cette matière
-            const existingGradeIndex = appData.grades.findIndex(g => 
-                g.studentId === studentId && g.subjectId === subjectId
-            );
-
-            let grade;
-            if (existingGradeIndex !== -1) {
-                // Mettre à jour la note existante
-                grade = appData.grades[existingGradeIndex];
-                grade.value = gradeValue;
-                grade.teacher = teacher;
-                showAlert(`Note mise à jour pour ${student.firstName} ${student.lastName} en ${subject.name}`, 'success');
-            } else {
-                // Créer une nouvelle note
-                grade = {
-                    id: appData.nextGradeId++,
-                    studentId: studentId,
-                    subjectId: subjectId,
-                    value: gradeValue,
-                    teacher: teacher
-                };
-                appData.grades.push(grade);
-                showAlert(`Note enregistrée pour ${student.firstName} ${student.lastName} en ${subject.name}`, 'success');
-            }
-            
-            // Sauvegarder
-            saveToLocalStorage();
-            
-            // Mettre à jour l'affichage
-            renderGrades();
-            updateGeneralStatistics();
-            updateSubjectStatsSelect();
-            updateDataCounters();
-            
-            // Réinitialiser le formulaire partiellement
-            document.getElementById('gradeValue').value = '';
-            document.getElementById('gradeTeacher').value = '';
-        }
-
-        // Fonction pour supprimer un élève
-        function deleteStudent(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cet élève ?')) {
-                // Supprimer l'élève
-                appData.students = appData.students.filter(student => student.id !== id);
-                
-                // Supprimer aussi les notes associées
-                appData.grades = appData.grades.filter(grade => grade.studentId !== id);
-                
-                // Sauvegarder
-                saveToLocalStorage();
-                
-                // Mettre à jour l'affichage
-                renderStudents();
-                updateStudentSelect();
-                updateSubjectStatsSelect();
-                renderGrades();
-                updateGeneralStatistics();
-                updateDataCounters();
-                
-                showAlert('Élève supprimé avec succès', 'success');
-            }
-        }
-
-        // Fonction pour supprimer une matière
-        function deleteSubject(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cette matière ?')) {
-                // Supprimer la matière
-                appData.subjects = appData.subjects.filter(subject => subject.id !== id);
-                
-                // Supprimer aussi les notes associées
-                appData.grades = appData.grades.filter(grade => grade.subjectId !== id);
-                
-                // Sauvegarder
-                saveToLocalStorage();
-                
-                // Mettre à jour l'affichage
-                renderSubjects();
-                updateSubjectSelect();
-                updateSubjectStatsSelect();
-                renderGrades();
-                updateGeneralStatistics();
-                updateDataCounters();
-                
-                showAlert('Matière supprimée avec succès', 'success');
-            }
-        }
-
-        // Fonction pour supprimer une note
-        function deleteGrade(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cette note ?')) {
-                // Supprimer la note
-                appData.grades = appData.grades.filter(grade => grade.id !== id);
-                
-                // Sauvegarder
-                saveToLocalStorage();
-                
-                // Mettre à jour l'affichage
-                renderGrades();
-                updateGeneralStatistics();
-                updateSubjectStatsSelect();
-                updateDataCounters();
-                
-                showAlert('Note supprimée avec succès', 'success');
-            }
-        }
-
-        // Fonction pour afficher les élèves
+        
+        // Rendu des élèves
         function renderStudents() {
             const tbody = document.getElementById('studentsList');
             tbody.innerHTML = '';
-
-            // Filtrer les élèves selon l'examen sélectionné
-            const filteredStudents = appData.students.filter(student => student.exam === appData.currentExam);
             
-            if (filteredStudents.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 30px;">Aucun élève enregistré pour l'examen ${appData.currentExam}</td></tr>`;
+            const filtered = appData.students.filter(s => s.exam === appData.currentExam);
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucun élève</td></tr>';
                 return;
             }
-
-            filteredStudents.forEach(student => {
+            
+            filtered.forEach(student => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${student.id}</td>
@@ -2194,66 +1253,55 @@
                     <td>${student.firstName}</td>
                     <td>${student.matricule}</td>
                     <td>${student.exam}</td>
-                    <td class="actions">
-                        <button class="action-btn" style="background: #e74c3c; color: white;" onclick="deleteStudent(${student.id})">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </td>
+                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteStudent(${student.id})"><i class="fas fa-trash"></i></button></td>
                 `;
                 tbody.appendChild(row);
             });
         }
-
-        // Fonction pour afficher les matières
+        
+        // Rendu des matières
         function renderSubjects() {
             const tbody = document.getElementById('subjectsList');
             tbody.innerHTML = '';
-
-            // Filtrer les matières selon l'examen sélectionné
-            const filteredSubjects = appData.subjects.filter(subject => subject.exam === appData.currentExam);
             
-            if (filteredSubjects.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px;">Aucune matière enregistrée pour l'examen ${appData.currentExam}</td></tr>`;
+            const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Aucune matière</td></tr>';
                 return;
             }
-
-            filteredSubjects.forEach(subject => {
+            
+            filtered.forEach(subject => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${subject.id}</td>
                     <td>${subject.name}</td>
                     <td>${subject.coefficient}</td>
                     <td>${subject.exam}</td>
-                    <td class="actions">
-                        <button class="action-btn" style="background: #e74c3c; color: white;" onclick="deleteSubject(${subject.id})">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </td>
+                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteSubject(${subject.id})"><i class="fas fa-trash"></i></button></td>
                 `;
                 tbody.appendChild(row);
             });
         }
-
-        // Fonction pour afficher les notes
+        
+        // Rendu des notes
         function renderGrades() {
             const tbody = document.getElementById('gradesList');
             tbody.innerHTML = '';
-
-            // Filtrer les notes selon l'examen sélectionné
-            const filteredGrades = appData.grades.filter(grade => {
+            
+            const filtered = appData.grades.filter(grade => {
                 const student = appData.students.find(s => s.id === grade.studentId);
                 return student && student.exam === appData.currentExam;
             });
             
-            if (filteredGrades.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 30px;">Aucune note enregistrée pour l'examen ${appData.currentExam}</td></tr>`;
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">Aucune note</td></tr>';
                 return;
             }
-
-            filteredGrades.forEach(grade => {
+            
+            filtered.forEach(grade => {
                 const student = appData.students.find(s => s.id === grade.studentId);
                 const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                
                 if (!student || !subject) return;
                 
                 const row = document.createElement('tr');
@@ -2263,765 +1311,354 @@
                     <td>${grade.value}/20</td>
                     <td>${subject.coefficient}</td>
                     <td>${grade.teacher}</td>
-                    <td class="actions">
-                        <button class="action-btn" style="background: #e74c3c; color: white;" onclick="deleteGrade(${grade.id})">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </td>
+                    <td><button class="action-btn" style="background:#e74c3c;color:white" onclick="deleteGrade(${grade.id})"><i class="fas fa-trash"></i></button></td>
                 `;
                 tbody.appendChild(row);
             });
         }
-
-        // Fonction pour mettre à jour la liste déroulante des élèves
-        function updateStudentSelect() {
-            const select = document.getElementById('gradeStudent');
-            select.innerHTML = '<option value="">Sélectionner un élève</option>';
+        
+        // Ajouter un élève
+        function addStudent() {
+            const lastName = document.getElementById('lastName').value.trim();
+            const firstName = document.getElementById('firstName').value.trim();
+            const matricule = document.getElementById('matricule').value.trim();
+            const exam = document.getElementById('studentExam').value;
             
-            // Filtrer les élèves selon l'examen sélectionné
-            const filteredStudents = appData.students.filter(student => student.exam === appData.currentExam);
-            
-            filteredStudents.forEach(student => {
-                const option = document.createElement('option');
-                option.value = student.id;
-                option.textContent = `${student.firstName} ${student.lastName} (${student.matricule})`;
-                select.appendChild(option);
-            });
-        }
-
-        // Fonction pour mettre à jour la liste déroulante des matières
-        function updateSubjectSelect() {
-            const select = document.getElementById('gradeSubject');
-            select.innerHTML = '<option value="">Sélectionner une matière</option>';
-            
-            // Filtrer les matières selon l'examen sélectionné
-            const filteredSubjects = appData.subjects.filter(subject => subject.exam === appData.currentExam);
-            
-            filteredSubjects.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject.id;
-                option.textContent = `${subject.name} (Coeff. ${subject.coefficient})`;
-                select.appendChild(option);
-            });
-        }
-
-        // Fonction pour mettre à jour la liste déroulante des matières pour les statistiques
-        function updateSubjectStatsSelect() {
-            const select = document.getElementById('subjectStatsSelect');
-            select.innerHTML = '<option value="">-- Choisir une matière --</option>';
-            
-            // Filtrer les matières selon l'examen sélectionné
-            const filteredSubjects = appData.subjects.filter(subject => subject.exam === appData.currentExam);
-            
-            filteredSubjects.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject.id;
-                option.textContent = `${subject.name} (Coeff. ${subject.coefficient})`;
-                select.appendChild(option);
-            });
-        }
-
-        // Fonction pour générer les statistiques générales
-        function updateGeneralStatistics() {
-            const statsContainer = document.getElementById('generalStats');
-            
-            // Filtrer les données pour l'examen courant
-            const filteredStudents = appData.students.filter(student => student.exam === appData.currentExam);
-            const filteredSubjects = appData.subjects.filter(subject => subject.exam === appData.currentExam);
-            const filteredGrades = appData.grades.filter(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
-                return student && student.exam === appData.currentExam;
-            });
-            
-            // Calculer les statistiques
-            const totalStudents = filteredStudents.length;
-            const totalSubjects = filteredSubjects.length;
-            const totalGrades = filteredGrades.length;
-            
-            // Calculer la moyenne générale
-            let totalAverage = 0;
-            let studentsWithAverage = 0;
-            
-            filteredStudents.forEach(student => {
-                const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
-                
-                if (studentGrades.length > 0) {
-                    let totalPoints = 0;
-                    let totalCoefficients = 0;
-                    
-                    studentGrades.forEach(grade => {
-                        const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                        if (subject) {
-                            totalPoints += grade.value * subject.coefficient;
-                            totalCoefficients += subject.coefficient;
-                        }
-                    });
-                    
-                    if (totalCoefficients > 0) {
-                        totalAverage += totalPoints / totalCoefficients;
-                        studentsWithAverage++;
-                    }
-                }
-            });
-            
-            const generalAverage = studentsWithAverage > 0 ? (totalAverage / studentsWithAverage).toFixed(2) : 0;
-            
-            // Calculer le taux de réussite (moyenne >= 10)
-            let passingStudents = 0;
-            
-            filteredStudents.forEach(student => {
-                const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
-                
-                if (studentGrades.length > 0) {
-                    let totalPoints = 0;
-                    let totalCoefficients = 0;
-                    
-                    studentGrades.forEach(grade => {
-                        const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                        if (subject) {
-                            totalPoints += grade.value * subject.coefficient;
-                            totalCoefficients += subject.coefficient;
-                        }
-                    });
-                    
-                    if (totalCoefficients > 0) {
-                        const studentAverage = totalPoints / totalCoefficients;
-                        if (studentAverage >= 10) {
-                            passingStudents++;
-                        }
-                    }
-                }
-            });
-            
-            const passingRate = studentsWithAverage > 0 ? Math.round((passingStudents / studentsWithAverage) * 100) : 0;
-            
-            // Calculer les élèves en difficulté (au moins une note < 10)
-            let studentsInDifficulty = 0;
-            
-            filteredStudents.forEach(student => {
-                const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
-                const hasLowGrade = studentGrades.some(grade => grade.value < 10);
-                
-                if (hasLowGrade) {
-                    studentsInDifficulty++;
-                }
-            });
-            
-            // Calculer la meilleure moyenne
-            let bestAverage = 0;
-            let bestStudent = null;
-            
-            filteredStudents.forEach(student => {
-                const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
-                
-                if (studentGrades.length > 0) {
-                    let totalPoints = 0;
-                    let totalCoefficients = 0;
-                    
-                    studentGrades.forEach(grade => {
-                        const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                        if (subject) {
-                            totalPoints += grade.value * subject.coefficient;
-                            totalCoefficients += subject.coefficient;
-                        }
-                    });
-                    
-                    if (totalCoefficients > 0) {
-                        const studentAverage = totalPoints / totalCoefficients;
-                        if (studentAverage > bestAverage) {
-                            bestAverage = studentAverage;
-                            bestStudent = student;
-                        }
-                    }
-                }
-            });
-            
-            // Afficher les statistiques
-            statsContainer.innerHTML = `
-                <div class="stat-card">
-                    <h3><i class="fas fa-users"></i> Élèves</h3>
-                    <div class="stat-value">${totalStudents}</div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Avec notes</span>
-                        <span class="stat-number">${studentsWithAverage}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">En difficulté</span>
-                        <span class="stat-number" style="color: #e74c3c;">${studentsInDifficulty}</span>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3><i class="fas fa-book"></i> Matières</h3>
-                    <div class="stat-value">${totalSubjects}</div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Notes enregistrées</span>
-                        <span class="stat-number">${totalGrades}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Notes moyennes par élève</span>
-                        <span class="stat-number">${studentsWithAverage > 0 ? (totalGrades / studentsWithAverage).toFixed(1) : 0}</span>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3><i class="fas fa-chart-line"></i> Performance</h3>
-                    <div class="stat-value">${generalAverage}/20</div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Taux de réussite</span>
-                        <span class="stat-number" style="color: #2ecc71;">${passingRate}%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-success" style="width: ${passingRate}%"></div>
-                    </div>
-                    ${bestStudent ? `
-                    <div class="stat-detail">
-                        <span class="stat-label">Meilleur élève</span>
-                        <span class="stat-number">${bestStudent.firstName} ${bestStudent.lastName}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Sa moyenne</span>
-                        <span class="stat-number" style="color: #f39c12;">${bestAverage.toFixed(2)}/20</span>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-
-        // Fonction pour mettre à jour les statistiques par matière
-        function updateSubjectStatistics(subjectId) {
-            const subject = appData.subjects.find(s => s.id === subjectId);
-            if (!subject) return;
-            
-            document.getElementById('selectedSubjectName').textContent = `Statistiques: ${subject.name} (Coefficient: ${subject.coefficient})`;
-            
-            // Afficher la section
-            document.getElementById('subjectStatistics').style.display = 'block';
-            
-            // Obtenir toutes les notes pour cette matière
-            const subjectGrades = appData.grades.filter(grade => grade.subjectId === subjectId);
-            
-            // Calculer les statistiques de base
-            const totalGrades = subjectGrades.length;
-            let sumGrades = 0;
-            let highestGrade = 0;
-            let lowestGrade = 20;
-            let studentsInDifficulty = [];
-            let topStudents = [];
-            
-            subjectGrades.forEach(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
-                if (!student) return;
-                
-                const gradeValue = grade.value;
-                sumGrades += gradeValue;
-                
-                // Trouver la note la plus haute et la plus basse
-                if (gradeValue > highestGrade) highestGrade = gradeValue;
-                if (gradeValue < lowestGrade) lowestGrade = gradeValue;
-                
-                // Élèves en difficulté (note < 10)
-                if (gradeValue < 10) {
-                    studentsInDifficulty.push({
-                        student: student,
-                        grade: gradeValue
-                    });
-                }
-                
-                // Meilleurs élèves (note ≥ 15)
-                if (gradeValue >= 15) {
-                    topStudents.push({
-                        student: student,
-                        grade: gradeValue
-                    });
-                }
-            });
-            
-            // Calculer la moyenne de la matière
-            const subjectAverage = totalGrades > 0 ? (sumGrades / totalGrades).toFixed(2) : 0;
-            
-            // Calculer le pourcentage de réussite (note ≥ 10)
-            const passingGrades = subjectGrades.filter(grade => grade.value >= 10).length;
-            const passingRate = totalGrades > 0 ? Math.round((passingGrades / totalGrades) * 100) : 0;
-            
-            // ANALYSE D'IMPACT: Combien d'élèves verraient leur moyenne augmenter s'ils avaient 10/20 ?
-            let studentsWithImprovedAverage = 0;
-            let averageImprovement = 0;
-            let studentsAffectedList = [];
-            
-            subjectGrades.forEach(grade => {
-                const student = appData.students.find(s => s.id === grade.studentId);
-                if (!student || grade.value >= 10) return;
-                
-                // Calculer la moyenne actuelle de l'élève
-                const studentGrades = appData.grades.filter(g => g.studentId === student.id);
-                
-                let currentTotalPoints = 0;
-                let currentTotalCoeff = 0;
-                let newTotalPoints = 0;
-                
-                studentGrades.forEach(g => {
-                    const subj = appData.subjects.find(s => s.id === g.subjectId);
-                    if (subj) {
-                        currentTotalPoints += g.value * subj.coefficient;
-                        currentTotalCoeff += subj.coefficient;
-                        
-                        // Pour le nouveau calcul, remplacer cette note par 10 si c'est la matière actuelle
-                        if (g.subjectId === subjectId) {
-                            newTotalPoints += 10 * subj.coefficient;
-                        } else {
-                            newTotalPoints += g.value * subj.coefficient;
-                        }
-                    }
-                });
-                
-                if (currentTotalCoeff > 0) {
-                    const currentAverage = currentTotalPoints / currentTotalCoeff;
-                    const newAverage = newTotalPoints / currentTotalCoeff;
-                    const improvement = newAverage - currentAverage;
-                    
-                    if (improvement > 0) {
-                        studentsWithImprovedAverage++;
-                        averageImprovement += improvement;
-                        
-                        studentsAffectedList.push({
-                            student: student,
-                            currentAverage: currentAverage.toFixed(2),
-                            newAverage: newAverage.toFixed(2),
-                            improvement: improvement.toFixed(2)
-                        });
-                    }
-                }
-            });
-            
-            const avgImprovement = studentsWithImprovedAverage > 0 ? (averageImprovement / studentsWithImprovedAverage).toFixed(2) : 0;
-            
-            // Mettre à jour les cartes de statistiques
-            const statsCards = document.getElementById('subjectStatsCards');
-            statsCards.innerHTML = `
-                <div class="stat-card">
-                    <h3><i class="fas fa-calculator"></i> Résultats</h3>
-                    <div class="stat-value">${subjectAverage}/20</div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Notes enregistrées</span>
-                        <span class="stat-number">${totalGrades}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Taux de réussite</span>
-                        <span class="stat-number" style="color: ${passingRate >= 50 ? '#2ecc71' : '#e74c3c'};">${passingRate}%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill ${passingRate >= 70 ? 'progress-success' : passingRate >= 50 ? 'progress-warning' : 'progress-danger'}" 
-                             style="width: ${passingRate}%"></div>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3><i class="fas fa-chart-bar"></i> Distribution</h3>
-                    <div class="stat-detail">
-                        <span class="stat-label">Note la plus haute</span>
-                        <span class="stat-number" style="color: #2ecc71;">${highestGrade}/20</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Note la plus basse</span>
-                        <span class="stat-number" style="color: #e74c3c;">${lowestGrade}/20</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Écart</span>
-                        <span class="stat-number">${(highestGrade - lowestGrade).toFixed(1)}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Élèves en difficulté</span>
-                        <span class="stat-number" style="color: #e74c3c;">${studentsInDifficulty.length}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Meilleurs élèves</span>
-                        <span class="stat-number" style="color: #f39c12;">${topStudents.length}</span>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3><i class="fas fa-trend-up"></i> Impact Potentiel</h3>
-                    <div class="stat-value">${studentsWithImprovedAverage}</div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Élèves concernés</span>
-                        <span class="stat-number" style="color: #3498db;">${studentsWithImprovedAverage}</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Amélioration moyenne</span>
-                        <span class="stat-number" style="color: #2ecc71;">+${avgImprovement} pts</span>
-                    </div>
-                    <div class="stat-detail">
-                        <span class="stat-label">Pourcentage d'élèves</span>
-                        <span class="stat-number">${totalGrades > 0 ? Math.round((studentsWithImprovedAverage / totalGrades) * 100) : 0}%</span>
-                    </div>
-                </div>
-            `;
-            
-            // Mettre à jour l'analyse d'impact
-            let impactText = '';
-            if (studentsWithImprovedAverage > 0) {
-                impactText = `
-                    <p><strong>Analyse:</strong> Si tous les élèves obtenaient au moins 10/20 dans cette matière, 
-                    ${studentsWithImprovedAverage} élève(s) verraient leur moyenne générale augmenter.</p>
-                    <p>L'amélioration moyenne serait de <strong>+${avgImprovement} points</strong> sur la moyenne générale.</p>
-                `;
-            } else {
-                impactText = `<p><strong>Analyse:</strong> Aucun élève ne verrait sa moyenne augmenter en obtenant 10/20 dans cette matière, car tous ont déjà une note suffisante ou d'autres matières en difficulté.</p>`;
-            }
-            
-            document.getElementById('impactAnalysisText').innerHTML = impactText;
-            
-            // Liste des élèves affectés
-            let affectedListHTML = '';
-            if (studentsAffectedList.length > 0) {
-                affectedListHTML = '<h5>Élèves dont la moyenne augmenterait:</h5><div class="students-list">';
-                studentsAffectedList.forEach(item => {
-                    affectedListHTML += `
-                        <div class="student-item">
-                            <span class="student-name">${item.student.firstName} ${item.student.lastName}</span>
-                            <div>
-                                <span style="color: #e74c3c; margin-right: 10px;">${item.currentAverage}/20</span>
-                                <i class="fas fa-arrow-right" style="color: #7f8c8d; margin-right: 10px;"></i>
-                                <span style="color: #2ecc71; margin-right: 10px;">${item.newAverage}/20</span>
-                                <span class="student-grade grade-good">+${item.improvement}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                affectedListHTML += '</div>';
-            }
-            document.getElementById('studentsAffectedList').innerHTML = affectedListHTML;
-            
-            // Afficher les élèves en difficulté
-            const difficultyList = document.getElementById('studentsInDifficulty');
-            if (studentsInDifficulty.length > 0) {
-                difficultyList.innerHTML = '';
-                studentsInDifficulty.forEach(item => {
-                    const gradeClass = item.grade < 5 ? 'grade-bad' : 'grade-medium';
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'student-item';
-                    itemDiv.innerHTML = `
-                        <span class="student-name">${item.student.firstName} ${item.student.lastName}</span>
-                        <span class="student-grade ${gradeClass}">${item.grade}/20</span>
-                    `;
-                    difficultyList.appendChild(itemDiv);
-                });
-            } else {
-                difficultyList.innerHTML = '<p style="text-align: center; color: #2ecc71; padding: 20px;"><i class="fas fa-check-circle"></i> Aucun élève en difficulté dans cette matière</p>';
-            }
-            
-            // Afficher les meilleurs élèves
-            const topList = document.getElementById('topStudents');
-            if (topStudents.length > 0) {
-                // Trier par note décroissante
-                topStudents.sort((a, b) => b.grade - a.grade);
-                
-                topList.innerHTML = '';
-                topStudents.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'student-item';
-                    itemDiv.innerHTML = `
-                        <span class="student-name">${item.student.firstName} ${item.student.lastName}</span>
-                        <span class="student-grade grade-good">${item.grade}/20</span>
-                    `;
-                    topList.appendChild(itemDiv);
-                });
-            } else {
-                topList.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;"><i class="fas fa-info-circle"></i> Aucun élève n\'a encore obtenu 15 ou plus</p>';
-            }
-            
-            // Créer le graphique de distribution des notes
-            createGradesDistributionChart(subjectGrades);
-        }
-
-        // Fonction pour créer un graphique de distribution des notes
-        function createGradesDistributionChart(grades) {
-            const ctx = document.getElementById('gradesDistributionChart').getContext('2d');
-            
-            // Détruire le graphique existant s'il y en a un
-            if (gradesChart) {
-                gradesChart.destroy();
-            }
-            
-            // Préparer les données pour le graphique
-            const gradeRanges = [
-                { label: '0-4', min: 0, max: 4 },
-                { label: '5-9', min: 5, max: 9 },
-                { label: '10-14', min: 10, max: 14 },
-                { label: '15-20', min: 15, max: 20 }
-            ];
-            
-            const gradeCounts = gradeRanges.map(range => {
-                return grades.filter(grade => grade.value >= range.min && grade.value <= range.max).length;
-            });
-            
-            const backgroundColors = [
-                'rgba(231, 76, 60, 0.7)',    // Rouge pour 0-4
-                'rgba(243, 156, 18, 0.7)',   // Orange pour 5-9
-                'rgba(52, 152, 219, 0.7)',   // Bleu pour 10-14
-                'rgba(46, 204, 113, 0.7)'    // Vert pour 15-20
-            ];
-            
-            const borderColors = [
-                'rgba(231, 76, 60, 1)',
-                'rgba(243, 156, 18, 1)',
-                'rgba(52, 152, 219, 1)',
-                'rgba(46, 204, 113, 1)'
-            ];
-            
-            // Créer le graphique
-            gradesChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: gradeRanges.map(range => range.label),
-                    datasets: [{
-                        label: 'Nombre d\'élèves',
-                        data: gradeCounts,
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.raw}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Nombre d\'élèves'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Plage de notes'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Fonction pour générer les bulletins
-        function generateBulletins() {
-            const bulletinResults = document.getElementById('bulletinResults');
-            bulletinResults.innerHTML = '';
-            
-            // Filtrer les élèves selon l'examen sélectionné
-            const filteredStudents = appData.students.filter(student => student.exam === appData.currentExam);
-            
-            if (filteredStudents.length === 0) {
-                showAlert(`Aucun élève enregistré pour l'examen ${appData.currentExam}`, 'error');
+            if (!lastName || !firstName || !matricule) {
+                showAlert('Veuillez remplir tous les champs', 'error');
                 return;
             }
             
-            // Calculer les moyennes pour chaque élève
-            const studentsWithAverages = filteredStudents.map(student => {
-                // Obtenir les notes de l'élève
-                const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
+            const student = {
+                id: appData.nextStudentId++,
+                lastName, firstName, matricule, exam
+            };
+            appData.students.push(student);
+            saveToLocalStorage();
+            updateUI();
+            
+            document.getElementById('lastName').value = '';
+            document.getElementById('firstName').value = '';
+            document.getElementById('matricule').value = '';
+            showAlert('Élève ajouté', 'success');
+        }
+        
+        // Supprimer un élève
+        function deleteStudent(id) {
+            if (confirm('Supprimer cet élève ?')) {
+                appData.students = appData.students.filter(s => s.id !== id);
+                appData.grades = appData.grades.filter(g => g.studentId !== id);
+                saveToLocalStorage();
+                updateUI();
+                showAlert('Élève supprimé', 'success');
+            }
+        }
+        
+        // Ajouter une matière
+        function addSubject() {
+            const name = document.getElementById('subjectName').value.trim();
+            const coefficient = parseInt(document.getElementById('coefficient').value);
+            const exam = document.getElementById('subjectExam').value;
+            
+            if (!name || coefficient < 1) {
+                showAlert('Nom et coefficient valides requis', 'error');
+                return;
+            }
+            
+            const subject = {
+                id: appData.nextSubjectId++,
+                name, coefficient, exam
+            };
+            appData.subjects.push(subject);
+            saveToLocalStorage();
+            updateUI();
+            
+            document.getElementById('subjectName').value = '';
+            document.getElementById('coefficient').value = '1';
+            showAlert('Matière ajoutée', 'success');
+        }
+        
+        // Supprimer une matière
+        function deleteSubject(id) {
+            if (confirm('Supprimer cette matière ?')) {
+                appData.subjects = appData.subjects.filter(s => s.id !== id);
+                appData.grades = appData.grades.filter(g => g.subjectId !== id);
+                saveToLocalStorage();
+                updateUI();
+                showAlert('Matière supprimée', 'success');
+            }
+        }
+        
+        // Ajouter une note
+        function addGrade() {
+            const studentId = parseInt(document.getElementById('gradeStudent').value);
+            const subjectId = parseInt(document.getElementById('gradeSubject').value);
+            const value = parseFloat(document.getElementById('gradeValue').value);
+            const teacher = document.getElementById('gradeTeacher').value.trim();
+            
+            if (!studentId || !subjectId || isNaN(value) || value < 0 || value > 20 || !teacher) {
+                showAlert('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            const existing = appData.grades.findIndex(g => g.studentId === studentId && g.subjectId === subjectId);
+            
+            if (existing !== -1) {
+                appData.grades[existing].value = value;
+                appData.grades[existing].teacher = teacher;
+                showAlert('Note mise à jour', 'success');
+            } else {
+                appData.grades.push({
+                    id: appData.nextGradeId++,
+                    studentId, subjectId, value, teacher
+                });
+                showAlert('Note ajoutée', 'success');
+            }
+            
+            saveToLocalStorage();
+            updateUI();
+            
+            document.getElementById('gradeValue').value = '';
+            document.getElementById('gradeTeacher').value = '';
+        }
+        
+        // Supprimer une note
+        function deleteGrade(id) {
+            if (confirm('Supprimer cette note ?')) {
+                appData.grades = appData.grades.filter(g => g.id !== id);
+                saveToLocalStorage();
+                updateUI();
+                showAlert('Note supprimée', 'success');
+            }
+        }
+        
+        // Mettre à jour les selects
+        function updateStudentSelect() {
+            const select = document.getElementById('gradeStudent');
+            select.innerHTML = '<option value="">Choisir</option>';
+            const filtered = appData.students.filter(s => s.exam === appData.currentExam);
+            filtered.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.firstName} ${s.lastName}</option>`;
+            });
+        }
+        
+        function updateSubjectSelect() {
+            const select = document.getElementById('gradeSubject');
+            select.innerHTML = '<option value="">Choisir</option>';
+            const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
+            filtered.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.name} (Coeff ${s.coefficient})</option>`;
+            });
+        }
+        
+        function updateSubjectStatsSelect() {
+            const select = document.getElementById('subjectStatsSelect');
+            select.innerHTML = '<option value="">-- Choisir --</option>';
+            const filtered = appData.subjects.filter(s => s.exam === appData.currentExam);
+            filtered.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+            });
+        }
+        
+        // Statistiques générales
+        function updateGeneralStatistics() {
+            const container = document.getElementById('generalStats');
+            const filteredStudents = appData.students.filter(s => s.exam === appData.currentExam);
+            const filteredSubjects = appData.subjects.filter(s => s.exam === appData.currentExam);
+            
+            let totalAverage = 0;
+            let studentsWithAvg = 0;
+            let passing = 0;
+            
+            filteredStudents.forEach(student => {
+                const grades = appData.grades.filter(g => g.studentId === student.id);
+                let totalPoints = 0, totalCoeff = 0;
                 
-                // Calculer la moyenne pondérée
-                let totalPoints = 0;
-                let totalCoefficients = 0;
-                let weakSubjects = [];
-                
-                studentGrades.forEach(grade => {
-                    const subject = appData.subjects.find(s => s.id === grade.subjectId);
+                grades.forEach(g => {
+                    const subject = appData.subjects.find(s => s.id === g.subjectId);
                     if (subject) {
-                        totalPoints += grade.value * subject.coefficient;
-                        totalCoefficients += subject.coefficient;
-                        
-                        // Identifier les matières à améliorer (note < 10)
-                        if (grade.value < 10) {
-                            weakSubjects.push({
-                                name: subject.name,
-                                grade: grade.value
-                            });
-                        }
+                        totalPoints += g.value * subject.coefficient;
+                        totalCoeff += subject.coefficient;
                     }
                 });
                 
-                const average = totalCoefficients > 0 ? totalPoints / totalCoefficients : 0;
-                
-                return {
-                    ...student,
-                    average: average.toFixed(2),
-                    weakSubjects: weakSubjects
-                };
-            });
-            
-            // Trier les élèves par moyenne (décroissant)
-            studentsWithAverages.sort((a, b) => b.average - a.average);
-            
-            // Générer un bulletin pour chaque élève
-            studentsWithAverages.forEach((student, index) => {
-                const bulletinElement = createBulletinElement(student, index + 1);
-                bulletinResults.appendChild(bulletinElement);
-            });
-            
-            // Afficher la section des bulletins
-            bulletinResults.style.display = 'block';
-            
-            showAlert(`${studentsWithAverages.length} bulletin(s) généré(s) avec succès`, 'success');
-        }
-
-        // Fonction pour créer un élément de bulletin
-        function createBulletinElement(student, rank) {
-            const bulletinDiv = document.createElement('div');
-            bulletinDiv.className = 'bulletin-section';
-            bulletinDiv.style.display = 'block';
-            bulletinDiv.style.marginBottom = '30px';
-            
-            // Obtenir les notes de l'élève
-            const studentGrades = appData.grades.filter(grade => grade.studentId === student.id);
-            
-            // Créer le tableau des notes
-            let gradesTableRows = '';
-            studentGrades.forEach(grade => {
-                const subject = appData.subjects.find(s => s.id === grade.subjectId);
-                if (subject) {
-                    const gradeClass = grade.value < 10 ? 'warning' : '';
-                    gradesTableRows += `
-                        <tr>
-                            <td>${subject.name}</td>
-                            <td>${subject.coefficient}</td>
-                            <td class="${gradeClass}">${grade.value}/20</td>
-                            <td>${grade.teacher}</td>
-                        </tr>
-                    `;
+                if (totalCoeff > 0) {
+                    const avg = totalPoints / totalCoeff;
+                    totalAverage += avg;
+                    studentsWithAvg++;
+                    if (avg >= 10) passing++;
                 }
             });
             
-            // Créer la liste des matières à améliorer
-            let weakSubjectsList = '';
-            if (student.weakSubjects.length > 0) {
-                weakSubjectsList = '<h3 style="color: #e74c3c; margin-top: 20px;"><i class="fas fa-exclamation-triangle"></i> Matières à améliorer</h3><ul>';
-                student.weakSubjects.forEach(subject => {
-                    weakSubjectsList += `<li><strong>${subject.name}</strong>: ${subject.grade}/20 (Doit redoubler d'efforts)</li>`;
-                });
-                weakSubjectsList += '</ul>';
-            } else {
-                weakSubjectsList = '<p style="color: #2ecc71; margin-top: 20px;"><i class="fas fa-check-circle"></i> Toutes les matières sont au-dessus de la moyenne</p>';
-            }
+            const generalAvg = studentsWithAvg > 0 ? (totalAverage / studentsWithAvg).toFixed(2) : 0;
+            const passRate = studentsWithAvg > 0 ? Math.round((passing / studentsWithAvg) * 100) : 0;
             
-            bulletinDiv.innerHTML = `
-                <div class="bulletin-header">
-                    <h2>BULLETIN D'EXAMEN BLANC - ${student.exam}</h2>
-                    <p>Année scolaire 2025-2026</p>
-                </div>
-                
-                <div class="student-info">
-                    <div>
-                        <p><strong>Nom:</strong> ${student.lastName}</p>
-                        <p><strong>Prénom:</strong> ${student.firstName}</p>
-                        <p><strong>Matricule/Table:</strong> ${student.matricule}</p>
-                    </div>
-                    <div>
-                        <p><strong>Examen:</strong> ${student.exam}</p>
-                        <p><strong>Date de génération:</strong> ${new Date().toLocaleDateString('fr-FR')}</p>
-                        <p class="average">Moyenne: ${student.average}/20 <span class="ranking">Classement: ${rank}/${appData.students.filter(s => s.exam === student.exam).length}</span></p>
-                    </div>
-                </div>
-                
-                <div class="grades-table">
-                    <h3><i class="fas fa-chart-line"></i> Résultats par matière</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Matière</th>
-                                <th>Coefficient</th>
-                                <th>Note</th>
-                                <th>Enseignant</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${gradesTableRows}
-                        </tbody>
-                    </table>
-                </div>
-                
-                ${weakSubjectsList}
-                
-                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
-                    <p><strong>Appréciation:</strong> ${getAppreciation(parseFloat(student.average))}</p>
-                    <p><strong>Signature du responsable:</strong> _________________________</p>
-                </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer ce bulletin</button>
-                </div>
+            container.innerHTML = `
+                <div class="stat-card"><h3>Élèves</h3><div class="stat-value">${filteredStudents.length}</div></div>
+                <div class="stat-card"><h3>Matières</h3><div class="stat-value">${filteredSubjects.length}</div></div>
+                <div class="stat-card"><h3>Moyenne Générale</h3><div class="stat-value">${generalAvg}/20</div><div class="progress-bar"><div class="progress-fill progress-success" style="width:${passRate}%"></div></div><p>Taux réussite: ${passRate}%</p></div>
             `;
+        }
+        
+        // Générer les bulletins
+        function generateBulletins() {
+            const container = document.getElementById('bulletinResults');
+            container.innerHTML = '';
             
-            return bulletinDiv;
-        }
-
-        // Fonction pour obtenir une appréciation basée sur la moyenne
-        function getAppreciation(average) {
-            if (average >= 16) return "Excellent travail !";
-            if (average >= 14) return "Très bon travail.";
-            if (average >= 12) return "Bon travail, peut encore progresser.";
-            if (average >= 10) return "Satisfaisant, mais des efforts sont nécessaires.";
-            if (average >= 8) return "Insuffisant, doit travailler davantage.";
-            return "Très insuffisant, un redoublement d'efforts est nécessaire.";
-        }
-
-        // Fonction pour afficher une alerte
-        function showAlert(message, type) {
-            const alertDiv = document.getElementById('alert');
-            alertDiv.textContent = message;
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.style.display = 'block';
+            const students = appData.students.filter(s => s.exam === appData.currentExam);
             
-            // Masquer l'alerte après 5 secondes
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        // Fonction pour sauvegarder dans le localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('examBulletinAppData', JSON.stringify(appData));
-        }
-
-        // Fonction pour charger depuis le localStorage
-        function loadFromLocalStorage() {
-            const savedData = localStorage.getItem('examBulletinAppData');
-            if (savedData) {
-                appData = JSON.parse(savedData);
+            if (students.length === 0) {
+                showAlert('Aucun élève', 'error');
+                return;
             }
-        }
-
-        // Fonction pour imprimer un bulletin
-        function printBulletin(button) {
-            const bulletin = button.closest('.bulletin-section');
-            const originalContents = document.body.innerHTML;
             
+            const studentsWithAvg = students.map(student => {
+                const grades = appData.grades.filter(g => g.studentId === student.id);
+                let totalPoints = 0, totalCoeff = 0;
+                let subjectGrades = [];
+                
+                grades.forEach(g => {
+                    const subject = appData.subjects.find(s => s.id === g.subjectId);
+                    if (subject) {
+                        totalPoints += g.value * subject.coefficient;
+                        totalCoeff += subject.coefficient;
+                        subjectGrades.push({ subject: subject.name, coeff: subject.coefficient, grade: g.value, teacher: g.teacher });
+                    }
+                });
+                
+                const avg = totalCoeff > 0 ? totalPoints / totalCoeff : 0;
+                return { ...student, avg: avg.toFixed(2), subjectGrades, hasGrades: grades.length > 0 };
+            });
+            
+            studentsWithAvg.sort((a, b) => parseFloat(b.avg) - parseFloat(a.avg));
+            
+            studentsWithAvg.forEach((student, idx) => {
+                const bulletin = document.createElement('div');
+                bulletin.className = 'bulletin-section';
+                bulletin.style.display = 'block';
+                bulletin.style.marginBottom = '30px';
+                
+                let gradesHtml = '';
+                student.subjectGrades.forEach(g => {
+                    const gradeClass = g.grade < 10 ? 'warning' : '';
+                    gradesHtml += `<tr><td>${g.subject}</td><td>${g.coeff}</td><td class="${gradeClass}">${g.grade}/20</td><td>${g.teacher}</td></tr>`;
+                });
+                
+                bulletin.innerHTML = `
+                    <div class="bulletin-header">
+                        <h2>BULLETIN EXAMEN BLANC - ${student.exam}</h2>
+                    </div>
+                    <div class="student-info">
+                        <div><p><strong>Nom:</strong> ${student.lastName}</p><p><strong>Prénom:</strong> ${student.firstName}</p><p><strong>Matricule:</strong> ${student.matricule}</p></div>
+                        <div><p class="average">Moyenne: ${student.avg}/20 <span class="ranking">Rang: ${idx+1}/${students.length}</span></p></div>
+                    </div>
+                    <table class="grades-table"><thead><tr><th>Matière</th><th>Coeff</th><th>Note</th><th>Enseignant</th></tr></thead><tbody>${gradesHtml}</tbody></table>
+                    <div style="margin-top:20px"><p><strong>Appréciation:</strong> ${getAppreciation(parseFloat(student.avg))}</p></div>
+                    <div style="text-align:center; margin-top:20px"><button class="btn" onclick="printBulletin(this)"><i class="fas fa-print"></i> Imprimer</button></div>
+                `;
+                container.appendChild(bulletin);
+            });
+            
+            showAlert(`${students.length} bulletin(s) généré(s)`, 'success');
+        }
+        
+        function getAppreciation(avg) {
+            if (avg >= 16) return "Excellent !";
+            if (avg >= 14) return "Très bien !";
+            if (avg >= 12) return "Bien";
+            if (avg >= 10) return "Satisfaisant";
+            return "Insuffisant, doit progresser";
+        }
+        
+        function printBulletin(btn) {
+            const bulletin = btn.closest('.bulletin-section');
+            const original = document.body.innerHTML;
             document.body.innerHTML = bulletin.innerHTML;
             window.print();
-            document.body.innerHTML = originalContents;
-            
-            // Recharger les écouteurs d'événements
-            setupEventListeners();
-            renderStudents();
-            renderSubjects();
-            renderGrades();
+            document.body.innerHTML = original;
+            location.reload();
         }
+        
+        // Exports simplifiés
+        function exportAllData() {
+            const data = JSON.stringify(appData, null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_${new Date().toISOString().slice(0,19)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showAlert('Export effectué', 'success');
+        }
+        
+        function resetAllData() {
+            if (confirm('⚠️ Supprimer TOUTES les données ?')) {
+                resetAppData();
+                updateUI();
+                showAlert('Données réinitialisées', 'success');
+            }
+        }
+        
+        // Événements
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!checkExistingSession()) {
+                document.getElementById('authOverlay').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+            }
+            
+            document.getElementById('authForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('authUsername').value.trim();
+                const password = document.getElementById('authPassword').value.trim();
+                
+                if (login(username, password)) {
+                    showAuthAlert('Connexion réussie !', 'success');
+                    setTimeout(() => {
+                        document.getElementById('authOverlay').style.display = 'none';
+                    }, 500);
+                } else {
+                    showAuthAlert('Identifiants incorrects', 'error');
+                }
+            });
+            
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('closeBtn').addEventListener('click', () => window.close());
+            document.getElementById('addStudentBtn').addEventListener('click', addStudent);
+            document.getElementById('addSubjectBtn').addEventListener('click', addSubject);
+            document.getElementById('addGradeBtn').addEventListener('click', addGrade);
+            document.getElementById('generateBulletinsBtn').addEventListener('click', generateBulletins);
+            document.getElementById('exportAllDataBtn').addEventListener('click', exportAllData);
+            document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+            
+            // Onglets
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+                    if (this.dataset.tab === 'statistics') updateGeneralStatistics();
+                });
+            });
+            
+            document.querySelectorAll('.exam-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.exam-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    appData.currentExam = this.dataset.exam;
+                    updateUI();
+                });
+            });
+            
+            document.getElementById('subjectStatsSelect').addEventListener('change', function() {
+                const subjectId = parseInt(this.value);
+                if (subjectId) {
+                    document.getElementById('subjectStatistics').style.display = 'block';
+                    // Update subject stats
+                }
+            });
+        });
     </script>
 </body>
 </html>
